@@ -34,34 +34,98 @@ class AvatarEditor extends Component {
 		this.setState({avatarType: 'creature'});
 	}
 
+	componentDidMount() {
+		const { defaultAvatarType, avatarType, image, creature } = this.props;
+
+		if (avatarType) {
+			this.setState({avatarType});
+
+		} else if (image) {
+			this.toggleImage();
+
+		} else if (creature) {
+			this.toggleCreature();
+
+		} else if (defaultAvatarType) {
+			this.setState({
+				avatarType: defaultAvatarType
+			});
+
+		} else if (this.props.defaultImage) {
+			logTitle('AvatarEditor: componentDidMount');
+			console.log('Setting default image');
+			console.log('');
+
+			this.toggleImage();
+
+		} else if (this.props.defaultCreature) {
+			logTitle('AvatarEditor: componentDidMount');
+			console.log('Setting default creature');
+			console.log('');
+
+			this.toggleCreature();
+		}
+	}
+
 	render() {
-		const
-			{ avatarType } = this.state,
+		const {
+				defaultImage,
+				defaultCreature,
+				defaultZoom,
+				defaultRotation,
+				defaultPosition,
+
+				image,
+				creature,
+				zoom,
+				rotation,
+				position
+			} = this.props,
 
 			is = {
-				creature: avatarType === 'creature',
-				image: avatarType === 'image'
-			};
+				creature: this.state.avatarType === 'creature',
+				image: this.state.avatarType === 'image'
+			},
+
+			avatarType = this.props.avatarType ? this.props.avatarType :
+				image ? 'image' :
+				creature ? 'creature' :
+				this.state.avatarType,
+
+			isControlled = this.props.avatarType || image || creature ?
+				true : false;
 
 		return (
 			<Container>
 				<Row>
-					<Header value={avatarType} />
+					<Header value={this.state.avatarType} />
 				</Row>
 
 				<Row>
-					<Toggle value={avatarType}
+					<Toggle
+						value={avatarType}
+						isControlled={isControlled}
 						toggleImageHandler={this.toggleImage}
 						toggleCreatureHandler={this.toggleCreature} />
 				</Row>
 
 				<Row>
 					<div style={is.image ? {display: 'block'} : {display: 'none'}}>
-						<ImageEditor />
+						<ImageEditor
+							defaultImage={defaultImage}
+							defaultZoom={defaultZoom}
+							defaultRotation={defaultRotation}
+							defaultPosition={defaultPosition}
+							image={image}
+							zoom={zoom}
+							rotation={rotation}
+							position={position} />
 					</div>
 
 					<div style={is.creature ? {display: 'block'} : {display: 'none'}}>
-						<CreatureEditor />
+						<CreatureEditor
+							defaultCreature={defaultCreature}
+							creature={creature} />
 					</div>
 				</Row>
 			</Container>

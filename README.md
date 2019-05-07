@@ -1,4 +1,4 @@
-# Avatar Editor Component
+# Reusable Avatar Editor Component
 
 Setting up an avatar editor for an app can be a lot of work: Not only does the user need an ability to zoom in and crop their uploaded image, but there should also be a system in place for generating random avatars for the users who've yet to set it up.  And since a lot of users may avoid that work, it's sort of important what these random avatars actually look like.
 
@@ -10,7 +10,7 @@ Once the component is working, as time permits, I will refactor the component wi
 
 ## The Original Implementation
 
-The avatar editor component allows the user to choose between two different types of avatar: image or creature.  Since new creatures can be created with a set of random numbers, we can assign avatars to new users - presumably without concern that the system will be flooded with a lot of identical avatars for new users.
+The avatar editor component allows the user to choose between two different types of avatar: image or creature.  Since new creatures can be created with a set of random numbers, we can automatically assign creature avatars to new users - presumably without concern that the system will be flooded with a lot of identical avatars for new users.
 
 <p align="center">
     <img width="50%" src="https://github.com/worldviewer/reusable-react-avatar-editor/blob/master/images/image-editor.png" />
@@ -20,7 +20,7 @@ The avatar editor component allows the user to choose between two different type
     <img width="50%" src="https://github.com/worldviewer/reusable-react-avatar-editor/blob/master/images/creature-editor.png" />
 </p>
 
-The project will bring together four existing React dependencies into one single React component:
+The project will bring together five existing React dependencies into one single React component:
 
 - [React Avatar Editor](https://www.npmjs.com/package/react-avatar-editor)
 - [SvgAvatar](https://www.npmjs.com/package/svg_avatar)
@@ -30,9 +30,9 @@ The project will bring together four existing React dependencies into one single
 
 And to keep the component simple, I will restrict the UI for creature selection to simply a button that the user can press to generate a new random creature.
 
-The first task is to just get this project working w the latest React and components - which involves a little bit of work since there have been a lot of changes since I last touched this code.
+The first task is to just get this project working w the latest React components - which involves a little bit of work since there have been changes since I last touched this code (especially with React Dropzone).
 
-Then, my next step will be to make sure that the code is broken up into logical components - that things are where people would expect to find them.
+Then, my next step will be to make sure that the code is broken up into logical components - that things are where people would expect to find them.  I will add in some default styling, and when the `Update` button is pressed, I'll display in my App wrapper the finished avatar.
 
 Once that is done, then I will begin experimenting with various refactors.
 

@@ -58,7 +58,21 @@ class CreatureEditor extends Component {
 	}
 
 	componentDidMount() {
-		this.changeCreature();
+		const
+			{ defaultCreature } = this.props;
+
+		if (defaultCreature) {
+			const
+				creatureSVG = svgAvatar.render_svg(defaultCreature);
+
+			this.setState({
+				creature: defaultCreature,
+				creatureSVG
+			});
+
+		} else {
+			this.changeCreature();
+		}
 	}
 
 	render() {

@@ -9,27 +9,16 @@ import TrashIcon from '../TrashIcon/TrashIcon';
 import CarlSagan from '../../assets/carl-sagan.jpg';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
-import { logTitle, logError, getFileTypeFromPreview, getAttachmentFromPreview, generateCarlSagan } from '../../libs/utils';
+import { logTitle, logError, getFileTypeFromPreview,
+	getAttachmentFromPreview, generateCarlSagan } from '../../libs/utils';
 import fileType from '../../libs/file-type/index';
 import readBlob from 'read-blob';
-
-/*
-	addFileHandler={this.fileDropHandler}
-	zoomImageHandler={this.zoomImage}
-	rotateImageHandler={this.rotateImage}
-	deleteImageHandler={this.deleteImage}
-	file={file}
-	scale={1 + zoom/20}
-	zoom={zoom}
-	rotation={rotation}
-	position={position}
-	panHandler={this.panHandler}
-*/
 
 const
 	dropzoneRef = createRef(),
 	MAX_ATTACHMENT_SIZE = 5000000,
-	VALID_ATTACHMENT_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+	VALID_ATTACHMENT_TYPES =
+		['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 
 class ImageEditor extends Component {
 	constructor(props) {
@@ -56,13 +45,13 @@ class ImageEditor extends Component {
 		this.rotateImage = this.rotateImage.bind(this);
 		this.panImage = this.panImage.bind(this);
 		this.zoomImage = this.zoomImage.bind(this);
-		this.deleteImage = this.deleteImage.bind(this);
+		this.resetImage = this.resetImage.bind(this);
 		this.updateImageAvatar = this.updateImageAvatar.bind(this);
+		this.loadPlaceholder = this.loadPlaceholder.bind(this);
 
 		this.placeholder = CarlSagan;
 	}
 
-	// TODO: Manage image dimension validations here
 	onDrop(acceptedFiles, rejectedFiles) {
 		if (rejectedFiles.length > 0) {
 			this.onDropRejected(rejectedFiles);
@@ -79,8 +68,6 @@ class ImageEditor extends Component {
 					let image = new Image();
 					image.src = dataurl;
 
-					// https://stackoverflow.com/questions/623172
-					// /how-to-get-image-size-height-width-using-javascript
 					image.onload = () => {
 						resolve({
 							name: file.name,
@@ -180,16 +167,23 @@ class ImageEditor extends Component {
 	}
 
 	rotateImage() {
+		const
+			rotation = (this.state.image.rotation + 90) % 360;
+
+		logTitle('ImageEditor: rotateImage');
+		console.log(rotation);
+		console.log('');
+
 		this.setState(prevState => ({
 			image: {
 				...prevState.image,
-				rotation: (prevState.image.rotation + 90) % 360
+				rotation
 			}
 		}));
 	}
 
 	zoomImage(zoom) {
-		logTitle('zoomImage:');
+		logTitle('ImageEditor: zoomImage');
 		console.log(zoom);
 		console.log('');
 
@@ -202,7 +196,11 @@ class ImageEditor extends Component {
 	}
 
 	panImage(position) {
-		logTitle('panHandler:');
+		if (this.props.position) {
+			return;
+		}
+
+		logTitle('ImageEditor: panImage');
 		console.log(position);
 		console.log('');
 
@@ -212,20 +210,6 @@ class ImageEditor extends Component {
 				position
 			}
 		}));
-	}
-
-	async deleteImage() {
-		const image = await generateCarlSagan();
-
-		this.setState({
-			image: {
-				file: {preview: image.src},
-				zoom: 0,
-				rotation: 0,
-				position: {x: 0.5, y: 0.5},
-				type: 'image/jpg'
-			}
-		});
 	}
 
 	updateImageAvatar(event) {
@@ -308,26 +292,62 @@ class ImageEditor extends Component {
 		console.log('');
 	}
 
-	async componentDidMount() {
-		const image = await generateCarlSagan();
+	loadPlaceholder() {
+		this.setState(prevState => ({
+			image: {
+				...prevState.image,
+				file: this.placeholder
+			}
+		}));
+	}
+
+	async resetImage() {
+		let image, preview;
+
+		const { defaultImage, defaultZoom, defaultRotation, defaultPosition,
+			zoom, position, rotation } = this.props;
+
+		if (this.props.image) {
+			preview = this.props.image;
+
+		} else if (defaultImage) {
+			preview = defaultImage;
+
+		} else {
+			image = await generateCarlSagan();
+			preview = image.src;
+		}
 
 		this.setState({
 			image: {
-				file: {preview: image.src},
-				zoom: 0,
-				rotation: 0,
-				position: {x: 0.5, y: 0.5},
+				file: {preview},
+				zoom: zoom ? zoom :
+					defaultZoom ? defaultZoom : 0,
+				rotation: rotation ? rotation :
+					defaultRotation ? defaultRotation : 0,
+				position: position ? position :
+					defaultPosition ? defaultPosition : {x: 0.5, y: 0.5},
 				type: 'image/jpg'
 			}
 		}, () => {
-			logTitle('ImageEditor: this.state');
-			console.log(this.state);
+			logTitle('ImageEditor: resetImage');
+			console.log(this.state.image);
 			console.log('');
 		});
 	}
 
+	componentDidMount() {
+		this.resetImage();
+	}
+
 	render() {
 		const
+			{ zoom, rotation, position, file } = this.state.image,
+
+			shouldDisableNewImage = this.props.image ? true : false,
+			shouldDisableZoom = this.props.zoom ? true : false,
+			shouldDisableRotation = this.props.rotation ? true : false,
+
 			editorStyles = {
 				alignItems: 'center',
 				display: 'flex',
@@ -338,6 +358,7 @@ class ImageEditor extends Component {
 				bottom: '29px',
 				color: 'white',
 				cursor: 'cell',
+				display: shouldDisableNewImage ? 'none' : 'auto',
 				fontSize: '14px',
 				position: 'absolute',
 				textAlign: 'center',
@@ -345,6 +366,7 @@ class ImageEditor extends Component {
 				zIndex: '100'
 			},
 			overlayMaskStyles = {
+				display: shouldDisableNewImage ? 'none' : 'auto',
 				height: '208px',
 				pointerEvents: 'none',
 				position: 'absolute',
@@ -353,15 +375,21 @@ class ImageEditor extends Component {
 				zIndex: '99'
 			},
 
-			{ zoom, rotation, position, file } = this.state.image,
-
 			handleStyles = {
 				border: 'solid 2px #e0e0e0',
 				height: '17px',
 				width: '17px',
 				marginTop: '-5px',
 				boxShadow: '0 0 0 2px #fafafa'
-			};
+			},
+
+			sliderWrapperStyles = {
+				pointerEvents: shouldDisableZoom ? 'none' : 'auto',
+				width: '50%',
+			},
+
+			image = file ? file.preview :
+				this.props.image ? this.props.image : null;
 
 		return (
 			<form onSubmit={this.updateImageAvatar}>
@@ -369,7 +397,7 @@ class ImageEditor extends Component {
 					<div style={{position: 'relative', cursor: 'move'}}>
 						<AvatarEditor
 							ref={this.setEditorRef}
-							image={file ? file.preview : this.placeholder}
+							image={image}
 							width={188}
 							height={188}
 							border={10}
@@ -378,9 +406,12 @@ class ImageEditor extends Component {
 							scale={1 + zoom/20}
 							rotate={rotation}
 							position={position}
-							onPositionChange={this.panImage} />
+							onPositionChange={this.panImage}
+							onLoadFailure={this.loadPlaceholder} />
 
-						<Dropzone onDrop={this.onDrop} ref={dropzoneRef}>
+						<Dropzone onDrop={this.onDrop} ref={dropzoneRef}
+							disabled={shouldDisableNewImage}>
+
 			  				{({getRootProps, getInputProps}) => (
 
 								<div style={editorStyles} {...getRootProps()}>
@@ -390,7 +421,8 @@ class ImageEditor extends Component {
 										<span className='noselect'>Upload</span>
 									</div>
 
-									<img style={overlayMaskStyles} src={Mask} alt='text mask' />
+									<img style={overlayMaskStyles}
+										src={Mask} alt='text mask' />
 									<input {...getInputProps()} />
 								</div>
 							)}
@@ -399,7 +431,7 @@ class ImageEditor extends Component {
 				</Row>
 
 				<Row>
-					<div style={{width: '50%'}}>
+					<div style={sliderWrapperStyles}>
 						<Slider onChange={this.zoomImage}
 							railStyle={{backgroundColor: '#e0e0e0', height: '7px'}}
 							trackStyle={{backgroundColor: '#00c853', height: '7px'}}
@@ -407,8 +439,8 @@ class ImageEditor extends Component {
 							value={zoom} />
 					</div>
 
-					<RotateIcon onClick={this.rotateImage} />
-					<TrashIcon onClick={this.deleteImage} />
+					<RotateIcon onClick={this.rotateImage} disabled={shouldDisableRotation} />
+					<TrashIcon onClick={this.resetImage} />
 				</Row>
 
 				<Row>
