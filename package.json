@@ -1,11 +1,20 @@
 {
-  "name": "avatar-editor",
+  "name": "reusable-react-avatar-editor",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@svgr/core": "^4.2.0",
+    "dompurify": "^1.0.10",
+    "jsdom": "^15.0.0",
+    "node-sass": "^4.12.0",
+    "rc-slider": "^8.6.9",
     "react": "^16.8.6",
+    "react-avatar-editor": "^11.0.7",
     "react-dom": "^16.8.6",
-    "react-scripts": "3.0.0"
+    "react-dropzone": "^10.1.4",
+    "react-icons": "^3.6.1",
+    "react-scripts": "3.0.0",
+    "read-blob": "^1.1.0"
   },
   "scripts": {
     "start": "react-scripts start",

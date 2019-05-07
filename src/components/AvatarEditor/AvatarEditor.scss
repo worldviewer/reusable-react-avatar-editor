@@ -1,0 +1,29 @@
+.AvatarEditor {
+	.noselect {
+		user-select: none; /* currently supported by Chrome and Opera */
+	}
+
+	.CreatureToggle.inactive, .ImageToggle.inactive {
+		background-color: white;
+
+		&:hover {
+			background-color: #f9f9f9;
+		}
+
+		&:active {
+			background-color: #f3f3f3;
+		}
+	}
+
+	.CreatureToggle.active, .ImageToggle.active, .Button {
+		background-color: #00c853;
+
+		&:hover {
+			background-color: #1AB14F;
+		}
+
+		&:active {
+			background-color: #008b39;
+		}
+	}
+}
