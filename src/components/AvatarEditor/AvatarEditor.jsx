@@ -123,7 +123,9 @@ class AvatarEditor extends Component {
 				rotation,
 				position,
 
-				disableNotifications
+				disableNotifications,
+				onUpdateCreature,
+				onUpdateImage
 			} = this.props,
 
 			is = {
@@ -164,13 +166,15 @@ class AvatarEditor extends Component {
 							rotation={rotation}
 							position={position}
 							postError={this.postError}
-							postSuccess={this.postSuccess} />
+							postSuccess={this.postSuccess}
+							onUpdateImage={onUpdateImage} />
 					</div>
 
 					<div style={is.creature ? {display: 'block'} : {display: 'none'}}>
 						<CreatureEditor
 							defaultCreature={defaultCreature}
-							creature={creature} />
+							creature={creature}
+							onUpdateCreature={onUpdateCreature} />
 					</div>
 				</Row>
 			</Container>
@@ -225,7 +229,10 @@ AvatarEditor.propTypes = {
 		y: PropTypes.number
 	}),
 	imageAvatarWidth: PropTypes.number,
-	disableNotifications: PropTypes.bool
+	
+	disableNotifications: PropTypes.bool,
+	onUpdateCreature: PropTypes.func,
+	onUpdateImage: PropTypes.func
 };
 
 export default AvatarEditor;

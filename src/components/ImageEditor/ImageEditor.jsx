@@ -283,6 +283,9 @@ class ImageEditor extends Component {
 			}));
 
 			this.props.postSuccess('Update Successful', 'avatar updated');
+
+			const { file, ...rest } = this.state.image;
+			this.props.onUpdateImage(file.preview, rest);
 		})
 
 		.catch(e => {
@@ -476,9 +479,11 @@ ImageEditor.propTypes = {
 		x: PropTypes.number,
 		y: PropTypes.number
 	}),
+	
 	postError: PropTypes.func,
 	postSuccess: PropTypes.func,
-	imageAvatarWidth: PropTypes.number
+	imageAvatarWidth: PropTypes.number,
+	onUpdateImage: PropTypes.func
 };
 
 export default ImageEditor;

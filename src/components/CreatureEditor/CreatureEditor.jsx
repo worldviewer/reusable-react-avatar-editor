@@ -56,6 +56,8 @@ class CreatureEditor extends Component {
 		event.preventDefault();
 
 		logTitle('CreatureEditor: updateCreatureAvatar');
+
+		this.props.onUpdateCreature(this.state.creature);
 	}
 
 	componentDidMount() {
@@ -152,7 +154,9 @@ CreatureEditor.propTypes = {
 			pattern: PropTypes.number,
 			colors: PropTypes.number
 		})
-	})
+	}),
+	
+	onUpdateCreature: PropTypes.func
 };
 
 export default CreatureEditor;
