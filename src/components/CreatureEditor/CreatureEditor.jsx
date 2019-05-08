@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Row from '../Row/Row';
 import Button from '../Button/Button';
 import { logTitle } from '../../libs/utils';
@@ -122,5 +123,36 @@ class CreatureEditor extends Component {
 		);
 	}
 }
+
+CreatureEditor.propTypes = {
+	defaultCreature: PropTypes.shape({
+		form: PropTypes.shape({
+			pattern: PropTypes.number,
+			colors: PropTypes.number
+		}),
+		mouth: PropTypes.shape({
+			pattern: PropTypes.number,
+			colors: PropTypes.number
+		}),
+		eye: PropTypes.shape({
+			pattern: PropTypes.number,
+			colors: PropTypes.number
+		})
+	}),
+	creature: PropTypes.shape({
+		form: PropTypes.shape({
+			pattern: PropTypes.number,
+			colors: PropTypes.number
+		}),
+		mouth: PropTypes.shape({
+			pattern: PropTypes.number,
+			colors: PropTypes.number
+		}),
+		eye: PropTypes.shape({
+			pattern: PropTypes.number,
+			colors: PropTypes.number
+		})
+	})
+};
 
 export default CreatureEditor;

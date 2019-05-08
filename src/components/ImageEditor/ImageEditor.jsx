@@ -1,4 +1,5 @@
 import React, { Component, createRef } from 'react';
+import PropTypes from 'prop-types';
 import Dropzone from 'react-dropzone';
 import AvatarEditor from 'react-avatar-editor';
 import Mask from '../../assets/avatar-mask.png';
@@ -452,5 +453,24 @@ class ImageEditor extends Component {
 		);
 	}
 }
+
+ImageEditor.propTypes = {
+	defaultImage: PropTypes.string,
+	defaultZoom: PropTypes.number,
+	defaultRotation: PropTypes.number,
+	defaultPosition: PropTypes.shape({
+		x: PropTypes.number,
+		y: PropTypes.number
+	}),
+	
+	image: PropTypes.string,
+	zoom: PropTypes.number,
+	rotation: PropTypes.number,
+	position: PropTypes.shape({
+		x: PropTypes.number,
+		y: PropTypes.number
+	}),
+	imageAvatarWidth: PropTypes.number
+};
 
 export default ImageEditor;
