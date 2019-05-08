@@ -8,7 +8,7 @@ I've set up a similar system before, but I've never turned it into a reusable co
 
 Once the component is working, as time permits, I will refactor the component with React Hooks, in order to observe the extent to which this new pattern simplifies the component code.
 
-## 
+## It's Two Avatar Editors with a Toggle
 
 The avatar editor component allows the user to choose between two different types of avatar: image or creature.  Since new creatures can be created with a set of random numbers, we can automatically assign creature avatars to new users - presumably without concern that the system will be flooded with a lot of identical avatars for new users.
 
@@ -55,8 +55,6 @@ If a `creature` prop is defined, the creature editor will initially display, and
 
 The `defaultAvatarType` prop sets the initial toggle state.  If the `avatarType` prop is specified, then in addition to that, the user also loses the ability to toggle to the other editor.
 
-Pressing the `Update` button will output the results.  For creatures, this will be the creature data in object form (which must be rendered using `SvgCreature`).  For images, this will be the cropped, zoomed, positioned result at the original resolution.
-
 The following table demonstrates how to prevent the user from changing certain avatar editor inputs.  These are the controlled props:
 
 | Prop       | Type    | Description                                                                 |
@@ -67,3 +65,22 @@ The following table demonstrates how to prevent the user from changing certain a
 | zoom       | number  | Sets the zoom, image editor slider will no longer work                      |
 | rotation   | number  | Sets the rotation, image editor rotation will no longer work                |
 | position   | object  | Sets the position, the image in the image editor will no longer pan         |
+
+## XSS Warning
+
+If you didn't already know, now you do: SVG is XML, and XML can contain JavaScript, so generating SVG within the app from a string-based representation is considered treacherous since it provides a potential path for users to inject JavaScript.  For this reason, Facebook uses syntax which is designed to encourage developers to sanitize the input from cross-site scripting attacks, like so:
+
+```
+<svg viewBox="0 0 500 500" key='creature'
+    dangerouslySetInnerHTML={{__html: creatureSVG}}
+    style={creatureStyles} />
+```
+
+If a user was to embed malicious JavaScript into these SVG's, then upload those SVG's onto a server, then that code could subsequently run on clients that are connected to that server.
+
+The issue is that, in practice, sanitizing SVG's tends to break them.
+
+## Outputs
+
+Pressing the `Update` button will output the results.  For creatures, this will be the creature data in object form (which must be rendered using `SvgCreature`).  For images, this will be the cropped, zoomed, positioned result at the original resolution.
+
