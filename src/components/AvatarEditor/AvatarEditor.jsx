@@ -29,12 +29,16 @@ class AvatarEditor extends Component {
 	}
 
 	postSuccess(title, message) {
+		if (this.props.disableNotifications) {
+			return;
+		}
+
 		this.notificationDOMRef.current.addNotification({
 			title,
 			message,
 			type: "success",
 			insert: "bottom",
-			container: "bottom-right",
+			container: "bottom-center",
 			animationIn: ["animated", "fadeIn"],
 			animationOut: ["animated", "fadeOut"],
 			dismiss: { duration: 3000 },
@@ -43,12 +47,16 @@ class AvatarEditor extends Component {
 	}
 
 	postError(title, message) {
+		if (this.props.disableNotifications) {
+			return;
+		}
+
 		this.notificationDOMRef.current.addNotification({
 			title,
 			message,
 			type: "danger",
 			insert: "bottom",
-			container: "bottom-right",
+			container: "bottom-center",
 			animationIn: ["animated", "fadeIn"],
 			animationOut: ["animated", "fadeOut"],
 			dismiss: { duration: 7000 },
@@ -113,7 +121,9 @@ class AvatarEditor extends Component {
 				creature,
 				zoom,
 				rotation,
-				position
+				position,
+
+				disableNotifications
 			} = this.props,
 
 			is = {
@@ -128,7 +138,7 @@ class AvatarEditor extends Component {
 
 		return (
 			<Container>
-		        <ReactNotification ref={this.notificationDOMRef} />
+		        { disableNotifications ? null : <ReactNotification ref={this.notificationDOMRef} /> }
 
 				<Row>
 					<Header value={this.state.avatarType} />
@@ -214,7 +224,8 @@ AvatarEditor.propTypes = {
 		x: PropTypes.number,
 		y: PropTypes.number
 	}),
-	imageAvatarWidth: PropTypes.number
+	imageAvatarWidth: PropTypes.number,
+	disableNotifications: PropTypes.bool
 };
 
 export default AvatarEditor;

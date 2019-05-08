@@ -66,6 +66,13 @@ The following table demonstrates how to prevent the user from changing certain a
 | rotation   | number  | Sets the rotation, image editor rotation will no longer work                |
 | position   | object  | Sets the position, the image in the image editor will no longer pan         |
 
+## Other Props
+
+| Prop                 | Type    | Default | Description                                                                                                                                                        |
+|----------------------|---------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| disableNotifications | boolean | `false` | I've added in notifications as a convenience, you can use this to suppress them                                                                                    |
+| imageAvatarWidth     | number  |         | If unspecified, no scaling will be applied to the image output; if you want to output an image avatar of specific dimensions, then enter the number of pixels here |
+
 ## Cross-Site Scripting (XSS) Attack Warning
 
 If you didn't already know, now you do: SVG is XML, and XML can contain JavaScript, so generating SVG within the app from a string-based representation is considered treacherous since it provides a potential path for users to inject JavaScript into server backends from clients.  For this reason, Facebook uses syntax in React for this very situation which is designed to encourage developers to sanitize the input from cross-site scripting attacks, like so:

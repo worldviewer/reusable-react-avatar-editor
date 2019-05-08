@@ -217,8 +217,9 @@ class ImageEditor extends Component {
 	updateImageAvatar(event) {
 		event.preventDefault();
 
-		console.log('ref:');
-		console.log(document.editor); // editor ref
+		logTitle('ImageEditor: updateImageAvatar');
+		console.log('document.editor ref:');
+		console.log(document.editor);
 
 		let avatars = {
 			original: null,

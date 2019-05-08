@@ -38,6 +38,7 @@ function App() {
     return (
         <div className='App'>
 			<AvatarEditor
+				disableNotifications={true}
 				imageAvatarWidth={30} />
 		</div>
     );
