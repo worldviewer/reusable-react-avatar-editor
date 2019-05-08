@@ -44,14 +44,14 @@ Pre-setting a component feature allows the developer to initialize the editor wi
 
 The following table demonstrates how to set default values:
 
-| Prop              | Type    | Default          | Description                                                                        |
-|-------------------|---------|------------------|------------------------------------------------------------------------------------|
-| defaultImage      | element |                  | Load the editor with this image                                                    |
-| defaultCreature   | object  |                  | Load the editor with this creature                                                 |
-| defaultAvatarType | string  | `image`          | Set the editor to initially display this avatar type, either `creature` or `image` |
-| defaultZoom       | number  | 1                | Set the editor to initially display image with this zoom level                     |
-| defaultRotation   | number  | 0                | Set the editor to initially display image with this rotation (in degrees, 0 - 360) |
-| defaultPosition   | object  | {x: 0.5, y: 0.5} | Set the editor to initially display image with this point as the center            |
+| Prop              | Type    | Default            | Description                                                                            |
+|-------------------|---------|--------------------|----------------------------------------------------------------------------------------|
+| defaultImage      | element |                    | Load the editor with this image                                                        |
+| defaultCreature   | object  |                    | Load the editor with this creature                                                     |
+| defaultAvatarType | string  | `image`            | Set the editor to initially display this avatar type, either `creature` or `image`     |
+| defaultZoom       | number  | `1`                | Set the editor to initially display image with this zoom level                         |
+| defaultRotation   | number  | `0`                | Set the editor to initially display image with this rotation (in degrees, `0` - `360`) |
+| defaultPosition   | object  | `{x: 0.5, y: 0.5}` | Set the editor to initially display image with this point as the center                |
 
 ## Controlled Props
 
@@ -62,6 +62,17 @@ If a `creature` prop is defined, the creature editor will initially display, and
 If the `avatarType` prop is specified, then the user can no longer toggle to the other editor.
 
 Pressing the `Update` button will output the results.  For creatures, this will be the creature data in object form (which must be rendered using `SvgCreature`).  For images, this will be the cropped, zoomed, positioned result at the original resolution.
+
+The following table demonstrates how to prevent the user from changing certain avatar editor inputs.  These are the controlled props:
+
+| Prop       | Type    | Description                                                                 |
+|------------|---------|-----------------------------------------------------------------------------|
+| image      | element | Sets the image editor to this provided image, user cannot change            |
+| creature   | object  | Sets the creature editor to this creature, user cannot change               |
+| avatarType | string  | Sets the avatar type, toggle can no longer be used to switch avatar editors |
+| zoom       | number  | Sets the zoom, image editor slider will no longer work                      |
+| rotation   | number  | Sets the rotation, image editor rotation will no longer work                |
+| position   | object  | Sets the position, the image in the image editor will no longer pan         |
 
 ## Note on XSS and SVG's
 
