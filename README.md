@@ -30,7 +30,7 @@ The project will bring together five existing React dependencies into one single
 
 And to keep the component simple, I will restrict the UI for creature selection to simply a button that the user can press to generate a new random creature.
 
-## Uncontrolled Props
+## Uncontrolled Component Props
 
 All props are optional.  Of the props that are supplied, there are two types: defaults (presets) and controlled.  Each feature can be independently preset or controlled.
 
@@ -47,7 +47,7 @@ The following table demonstrates how to set default values:
 | defaultRotation   | number  | `0`                | Set the editor to initially display image with this rotation (in degrees, `0` - `360`) |
 | defaultPosition   | object  | `{x: 0.5, y: 0.5}` | Set the editor to initially display image with this point as the center                |
 
-## Controlled Props
+## Controlled Component Props
 
 When a prop is controlled, it will override any default prop that might also be applied, and that particular value will become set such that the user cannot change it.  For example, if the `image` prop is defined, then `dropZone` will be disabled, the UI for dropping a new image file into the avatar will disappear, and the image editor will initially display.  But, the user can still switch over to the creature editor.
 
