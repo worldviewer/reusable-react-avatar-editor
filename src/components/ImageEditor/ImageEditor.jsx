@@ -53,9 +53,9 @@ class ImageEditor extends Component {
 		this.placeholder = CarlSagan;
 	}
 
-	onDrop(acceptedFiles, rejectedFiles) {
-		if (rejectedFiles.length > 0) {
-			this.onDropRejected(rejectedFiles);
+	onDrop(acceptedFiles) {
+		if (acceptedFiles.length === 0) {
+			return;
 		}
 
 		let promiseList = acceptedFiles.map(file => {
@@ -85,8 +85,6 @@ class ImageEditor extends Component {
 			logTitle('ImageEditor: Dropped files');
 			console.log('Accepted Files:');
 			console.log(enhancedList);
-			console.log('Rejected Files:');
-			console.log(rejectedFiles);
 			console.log('');
 
 			let file = enhancedList[0];
@@ -102,8 +100,8 @@ class ImageEditor extends Component {
 			console.log('');
 
 			if (!type) {
-				// postError('Error determining the image\'s file type for ' +
-				// 	file.name);
+				this.props.postError('Unknown File Type',
+					'Error determining the image\'s file type for ' + file.name);
 
 				logError('Error determining the image\'s file type for ' +
 					file.name, 'SettingsComponent', 'fileDropHandler');
@@ -124,7 +122,7 @@ class ImageEditor extends Component {
 			}));
 
 		}).catch(e => {
-			// postError('Error Adding File(s): ' + e.message);
+			this.props.postError('File Drop Error', 'Error Adding File(s): ' + e.message);
 
 			logError('Error Adding File(s): ' + e.message, 'ImageEditor',
 				'onDrop');
@@ -132,6 +130,8 @@ class ImageEditor extends Component {
 	}
 
 	onDropRejected(rejectedFiles) {
+		logTitle('ImageEditor: onDropRejected');
+
 		const messages = rejectedFiles.map(file => {
 			let message = '';
 
@@ -151,7 +151,8 @@ class ImageEditor extends Component {
 			'Some image files were rejected: ' :
 			'An image file was rejected: ';
 
-		// postError(preface + messages.reduce((prev, cur) => prev + cur, ''));
+		this.props.postError('File Drop Error',
+			preface + messages.reduce((prev, cur) => prev + cur, ''));
 
 		logError(preface + messages.reduce((prev, cur) => prev + cur, ''),
 			'ImageEditor', 'onDropRejected');
@@ -280,13 +281,13 @@ class ImageEditor extends Component {
 				}
 			}));
 
-			// postSuccess('avatar updated');
+			this.props.postSuccess('Update Successful', 'avatar updated');
 		})
 
 		.catch(e => {
-			// postError('Error uploading avatar images: ' + e.message);
+			this.props.postError('Processing Error', 'Error processing avatar images: ' + e.message);
 
-			logError('Error uploading avatar images: ' + e.message,
+			logError('Error processing avatar images: ' + e.message,
 				'AvatarEditor', 'updateImageAvatar');
 		});
 
@@ -410,7 +411,11 @@ class ImageEditor extends Component {
 							onPositionChange={this.panImage}
 							onLoadFailure={this.loadPlaceholder} />
 
-						<Dropzone onDrop={this.onDrop} ref={dropzoneRef}
+						<Dropzone
+							onDrop={this.onDrop}
+							onDropRejected={this.onDropRejected}
+							ref={dropzoneRef}
+							accept={VALID_ATTACHMENT_TYPES}
 							disabled={shouldDisableNewImage}>
 
 			  				{({getRootProps, getInputProps}) => (
@@ -462,7 +467,7 @@ ImageEditor.propTypes = {
 		x: PropTypes.number,
 		y: PropTypes.number
 	}),
-	
+
 	image: PropTypes.string,
 	zoom: PropTypes.number,
 	rotation: PropTypes.number,
@@ -470,6 +475,8 @@ ImageEditor.propTypes = {
 		x: PropTypes.number,
 		y: PropTypes.number
 	}),
+	postError: PropTypes.func,
+	postSuccess: PropTypes.func,
 	imageAvatarWidth: PropTypes.number
 };
 

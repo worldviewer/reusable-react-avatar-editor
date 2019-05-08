@@ -8,6 +8,8 @@ import ImageEditor from '../ImageEditor/ImageEditor';
 import CreatureEditor from '../CreatureEditor/CreatureEditor';
 import { logTitle } from '../../libs/utils';
 import './AvatarEditor.scss';
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 
 class AvatarEditor extends Component {
 	constructor(props) {
@@ -21,6 +23,37 @@ class AvatarEditor extends Component {
 
 		this.toggleImage = this.toggleImage.bind(this);
 		this.toggleCreature = this.toggleCreature.bind(this);
+		this.postSuccess = this.postSuccess.bind(this);
+		this.postError = this.postError.bind(this);
+		this.notificationDOMRef = React.createRef();
+	}
+
+	postSuccess(title, message) {
+		this.notificationDOMRef.current.addNotification({
+			title,
+			message,
+			type: "success",
+			insert: "bottom",
+			container: "bottom-right",
+			animationIn: ["animated", "fadeIn"],
+			animationOut: ["animated", "fadeOut"],
+			dismiss: { duration: 3000 },
+			dismissable: { click: true }
+		});
+	}
+
+	postError(title, message) {
+		this.notificationDOMRef.current.addNotification({
+			title,
+			message,
+			type: "danger",
+			insert: "bottom",
+			container: "bottom-right",
+			animationIn: ["animated", "fadeIn"],
+			animationOut: ["animated", "fadeOut"],
+			dismiss: { duration: 7000 },
+			dismissable: { click: true }
+		});
 	}
 
 	toggleImage() {
@@ -95,6 +128,8 @@ class AvatarEditor extends Component {
 
 		return (
 			<Container>
+		        <ReactNotification ref={this.notificationDOMRef} />
+
 				<Row>
 					<Header value={this.state.avatarType} />
 				</Row>
@@ -117,7 +152,9 @@ class AvatarEditor extends Component {
 							image={image}
 							zoom={zoom}
 							rotation={rotation}
-							position={position} />
+							position={position}
+							postError={this.postError}
+							postSuccess={this.postSuccess} />
 					</div>
 
 					<div style={is.creature ? {display: 'block'} : {display: 'none'}}>
