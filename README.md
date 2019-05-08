@@ -66,9 +66,9 @@ The following table demonstrates how to prevent the user from changing certain a
 | rotation   | number  | Sets the rotation, image editor rotation will no longer work                |
 | position   | object  | Sets the position, the image in the image editor will no longer pan         |
 
-## XSS Warning
+## Cross-Site Scripting (XSS) Attack Warning
 
-If you didn't already know, now you do: SVG is XML, and XML can contain JavaScript, so generating SVG within the app from a string-based representation is considered treacherous since it provides a potential path for users to inject JavaScript.  For this reason, Facebook uses syntax which is designed to encourage developers to sanitize the input from cross-site scripting attacks, like so:
+If you didn't already know, now you do: SVG is XML, and XML can contain JavaScript, so generating SVG within the app from a string-based representation is considered treacherous since it provides a potential path for users to inject JavaScript into server backends from clients.  For this reason, Facebook uses syntax in React for this very situation which is designed to encourage developers to sanitize the input from cross-site scripting attacks, like so:
 
 ```
 <svg viewBox="0 0 500 500" key='creature'
@@ -76,9 +76,9 @@ If you didn't already know, now you do: SVG is XML, and XML can contain JavaScri
     style={creatureStyles} />
 ```
 
-If a user was to embed malicious JavaScript into these SVG's, then upload those SVG's onto a server, then that code could subsequently run on clients that are connected to that server.
+If a user was to somehow embed malicious JavaScript into these generated SVG's, and then upload those SVG's onto a server, then that code could subsequently run on clients that are connected to that server.
 
-The issue is that, in practice, sanitizing SVG's tends to break them.
+There are a number of XSS libraries which can remove XSS threats.  However, `xss` and `xss-filters` do not work with SVG's, and `dompurify` produces a broken creature.  There does not (?) yet appear to be an SVG parser which removes XSS attacks from SVG code.  But even if there was, shouldn't it exist on the backend, in a place where the code cannot be modified?  These are the types of issues which developers should think through when architecting their avatar system. In other words, it's probably not wise in a security sense to imagine that this SVG generator component can solve 100% of your avatar creation needs on just the client, without any server at all.
 
 ## Outputs
 
