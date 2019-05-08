@@ -8,7 +8,7 @@ I've set up a similar system before, but I've never turned it into a reusable co
 
 Once the component is working, as time permits, I will refactor the component with React Hooks, in order to observe the extent to which this new pattern simplifies the component code.
 
-## The Original Implementation
+## 
 
 The avatar editor component allows the user to choose between two different types of avatar: image or creature.  Since new creatures can be created with a set of random numbers, we can automatically assign creature avatars to new users - presumably without concern that the system will be flooded with a lot of identical avatars for new users.
 
@@ -51,9 +51,9 @@ The following table demonstrates how to set default values:
 
 When a prop is controlled, it will override any default prop that might also be applied, and that particular value will become set such that the user cannot change it.  For example, if the `image` prop is defined, then `dropZone` will be disabled, the UI for dropping a new image file into the avatar will disappear, and the image editor will initially display.  But, the user can still switch over to the creature editor.
 
-If a `creature` prop is defined, the creature editor will initially display, and the `Change` button will be disabled.  But, the user can still toggle to the image editor.
+If a `creature` prop is defined, the creature editor will initially display, and the `Change` button will be disabled.  But, the user can still toggle to the image editor, and they can still choose to output an image avatar.
 
-If the `avatarType` prop is specified, then the user can no longer toggle to the other editor.
+The `defaultAvatarType` prop sets the initial toggle state.  If the `avatarType` prop is specified, then in addition to that, the user also loses the ability to toggle to the other editor.
 
 Pressing the `Update` button will output the results.  For creatures, this will be the creature data in object form (which must be rendered using `SvgCreature`).  For images, this will be the cropped, zoomed, positioned result at the original resolution.
 
