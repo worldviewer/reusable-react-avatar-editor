@@ -36,6 +36,33 @@ Then, my next step will be to make sure that the code is broken up into logical 
 
 Once that is done, then I will begin experimenting with various refactors.
 
+## Uncontrolled Props
+
+All props are optional.  Of the props that are supplied, there are two types: defaults (presets) and controlled.  Each feature can be independently preset or controlled.
+
+Pre-setting a component feature allows the developer to initialize the editor with an (uncontrolled) state which the user can subsequently adjust, whereas setting any of the non-default props will force that particular feature into a controlled state which the user cannot subsequently adjust.
+
+The following table demonstrates how to set default values:
+
+| Prop              | Type    | Default          | Description                                                                        |
+|-------------------|---------|------------------|------------------------------------------------------------------------------------|
+| defaultImage      | element |                  | Load the editor with this image                                                    |
+| defaultCreature   | object  |                  | Load the editor with this creature                                                 |
+| defaultAvatarType | string  | `image`          | Set the editor to initially display this avatar type, either `creature` or `image` |
+| defaultZoom       | number  | 1                | Set the editor to initially display image with this zoom level                     |
+| defaultRotation   | number  | 0                | Set the editor to initially display image with this rotation (in degrees, 0 - 360) |
+| defaultPosition   | object  | {x: 0.5, y: 0.5} | Set the editor to initially display image with this point as the center            |
+
+## Controlled Props
+
+When a prop is controlled, it will override any default prop that might also be applied, and that particular value will become set such that the user cannot change it.  For example, if the `image` prop is defined, then `dropZone` will be disabled, the UI for dropping a new image file into the avatar will disappear, and the image editor will initially display.  But, the user can still switch over to the creature editor.
+
+If a `creature` prop is defined, the creature editor will initially display, and the `Change` button will be disabled.  But, the user can still toggle to the image editor.
+
+If the `avatarType` prop is specified, then the user can no longer toggle to the other editor.
+
+Pressing the `Update` button will output the results.  For creatures, this will be the creature data in object form (which must be rendered using `SvgCreature`).  For images, this will be the cropped, zoomed, positioned result at the original resolution.
+
 ## Note on XSS and SVG's
 
 SVG's are XML, which means they can contain JavaScript, which makes them susceptible to XSS attacks.  I tried a number of approaches to sanitizing the SVG: The top three XSS sanitizers - `xss`, `xss-filters` and `dompurify` all corrupted the SVG.  `dompurify` seemed to come the closest insofar as it actually generated SVG - but the SVG was incorrect.

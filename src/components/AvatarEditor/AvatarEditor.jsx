@@ -88,12 +88,9 @@ class AvatarEditor extends Component {
 			},
 
 			avatarType = this.props.avatarType ? this.props.avatarType :
-				image ? 'image' :
-				creature ? 'creature' :
 				this.state.avatarType,
 
-			isControlled = this.props.avatarType || image || creature ?
-				true : false;
+			isControlled = this.props.avatarType ? true : false;
 
 		return (
 			<Container>

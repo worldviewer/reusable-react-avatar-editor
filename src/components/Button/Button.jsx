@@ -1,19 +1,31 @@
 import React from 'react';
 
 const
-	buttonStyles = {
-		borderRadius: '4px',
-		color: 'white',
-		cursor: 'pointer',
-		fontSize: '14px',
-		fontWeight: 'bold',
-		height: '35px',
-		width: '188px'
-	},
+	Button = props => {
+		const
+			isControlled = props.isControlled,
 
-	Button = props =>
-		<button className='Button' style={buttonStyles} {...props}>
-			{props.children}
-		</button>;
+			buttonStyles = {
+				backgroundColor: isControlled ? '#b4eecd' : null,
+				borderColor: isControlled ? '#b4eecd' : null,
+				borderRadius: '4px',
+				color: 'white',
+				cursor: 'pointer',
+				fontSize: '14px',
+				fontWeight: 'bold',
+				height: '35px',
+				width: '188px'
+			},
+
+			rest = {...props};
+
+			delete rest.isControlled;
+
+		return (
+			<button className='Button' style={buttonStyles} disabled={isControlled} {...rest}>
+				{props.children}
+			</button>
+		);
+	}
 
 export default Button;

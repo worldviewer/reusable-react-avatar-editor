@@ -59,9 +59,19 @@ class CreatureEditor extends Component {
 
 	componentDidMount() {
 		const
-			{ defaultCreature } = this.props;
+			{ defaultCreature } = this.props,
+			controlledCreature = this.props.creature;
 
-		if (defaultCreature) {
+		if (controlledCreature) {
+			const
+				creatureSVG = svgAvatar.render_svg(controlledCreature);
+
+			this.setState({
+				creature: controlledCreature,
+				creatureSVG
+			});
+
+		} else if (defaultCreature) {
 			const
 				creatureSVG = svgAvatar.render_svg(defaultCreature);
 
@@ -83,7 +93,9 @@ class CreatureEditor extends Component {
 				marginBottom: '27px',
 				marginTop: '25px',
 				width: '188px'
-			};
+			},
+
+			isControlledCreature = this.props.creature ? true : false;
 
 		return (
 			<form onSubmit={this.updateCreatureAvatar}>
@@ -94,7 +106,9 @@ class CreatureEditor extends Component {
 				</Row>
 
 				<Row>
-					<Button onClick={this.changeCreature}>
+					<Button onClick={this.changeCreature}
+						isControlled={isControlledCreature}>
+
 						Change
 					</Button>
 				</Row>

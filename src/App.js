@@ -45,7 +45,7 @@ function App() {
 				defaultRotation={90}
 				defaultPosition={{x: 0.6, y: 0.6}}
 
-				image={neptune}
+				creature={creatureJim}
 				zoom={2}
 				rotation={180}
 				position={{x: 0.7, y: 0.7}} />
