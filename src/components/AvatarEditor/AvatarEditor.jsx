@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Container from '../Container/Container';
 import Row from '../Row/Row';
 import Header from '../Header/Header';
@@ -129,5 +130,54 @@ class AvatarEditor extends Component {
 		);
 	}
 }
+
+AvatarEditor.propTypes = {
+	defaultImage: PropTypes.string,
+	defaultCreature: PropTypes.shape({
+		form: PropTypes.shape({
+			pattern: PropTypes.number,
+			colors: PropTypes.number
+		}),
+		mouth: PropTypes.shape({
+			pattern: PropTypes.number,
+			colors: PropTypes.number
+		}),
+		eye: PropTypes.shape({
+			pattern: PropTypes.number,
+			colors: PropTypes.number
+		})
+	}),
+	defaultAvatarType: PropTypes.oneOf(['image', 'creature']),
+	defaultZoom: PropTypes.number,
+	defaultRotation: PropTypes.number,
+	defaultPosition: PropTypes.shape({
+		x: PropTypes.number,
+		y: PropTypes.number
+	}),
+
+	image: PropTypes.string,
+	creature: PropTypes.shape({
+		form: PropTypes.shape({
+			pattern: PropTypes.number,
+			colors: PropTypes.number
+		}),
+		mouth: PropTypes.shape({
+			pattern: PropTypes.number,
+			colors: PropTypes.number
+		}),
+		eye: PropTypes.shape({
+			pattern: PropTypes.number,
+			colors: PropTypes.number
+		})
+	}),
+	avatarType: PropTypes.oneOf(['image', 'creature']),
+	zoom: PropTypes.number,
+	rotation: PropTypes.number,
+	position: PropTypes.shape({
+		x: PropTypes.number,
+		y: PropTypes.number
+	}),
+	imageAvatarWidth: PropTypes.number
+};
 
 export default AvatarEditor;

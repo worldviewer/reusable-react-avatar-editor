@@ -78,7 +78,9 @@ If you didn't already know, now you do: SVG is XML, and XML can contain JavaScri
 
 If a user was to somehow embed malicious JavaScript into these generated SVG's, and then upload those SVG's onto a server, then that code could subsequently run on clients that are connected to that server.
 
-There are a number of XSS libraries which can remove XSS threats.  However, `xss` and `xss-filters` do not work with SVG's, and `dompurify` produces a broken creature.  There does not (?) yet appear to be an SVG parser which removes XSS attacks from SVG code.  But even if there was, shouldn't it exist on the backend, in a place where the code cannot be modified?  These are the types of issues which developers should think through when architecting their avatar system. In other words, it's probably not wise in a security sense to imagine that this SVG generator component can solve 100% of your avatar creation needs on just the client, without any server at all.
+There are a number of XSS libraries which can remove XSS threats.  However, `xss` and `xss-filters` do not work with SVG's, and `dompurify` produces a broken creature.  There does not (?) yet appear to be an SVG parser which removes XSS attacks from SVG code.  But even if there was, shouldn't it exist on the backend, in a place where the code cannot be modified?  These are the types of issues which developers should think through when architecting their avatar system.
+
+In other words, if you are integrating this component into a larger client-server architecture, it's probably not wise in a security sense to imagine that this SVG generator component can solve 100% of your avatar creation needs on just the client, without any server at all.  You'd be wise to create a simple parser on the server which only generates the SVG elements specified in `SvgAvatar/avatar_lib.json`.  The `@svgr/core` package already does something similar to this.
 
 ## Outputs
 

@@ -38,13 +38,6 @@ function App() {
     return (
         <div className='App'>
 			<AvatarEditor
-				defaultImage={neptune}
-				defaultCreature={creatureBob}
-				defaultAvatarType={'image'}
-				defaultZoom={1.5}
-				defaultRotation={90}
-				defaultPosition={{x: 0.6, y: 0.6}}
-
 				imageAvatarWidth={30} />
 		</div>
     );
