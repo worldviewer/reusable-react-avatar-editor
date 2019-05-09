@@ -8,9 +8,14 @@ import AvatarEditor from './components/AvatarEditor/AvatarEditor';
 import ImageAvatar from './components/ImageAvatar/ImageAvatar';
 import neptune from './assets/neptune.jpg';
 import plasmaBall from './assets/plasma-ball.jpg';
-import { logTitle } from './libs/utils';
+import { logTitle, logError } from './libs/utils';
 import svgAvatar from './libs/SvgAvatar/index';
 import ReactJson from 'react-json-view';
+
+const
+	MAX_ATTACHMENT_SIZE = 5000000,
+	VALID_ATTACHMENT_TYPES =
+		['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 
 class App extends Component {
 	constructor(props) {
@@ -58,6 +63,8 @@ class App extends Component {
 
 		this.onUpdateImage = this.onUpdateImage.bind(this);
 		this.onUpdateCreature = this.onUpdateCreature.bind(this);
+		this.onDropRejected = this.onDropRejected.bind(this);
+		this.onError = this.onError.bind(this);
 		this.saveWindowState = this.saveWindowState.bind(this);
 	}
 
@@ -79,6 +86,36 @@ class App extends Component {
 		console.log('');
 
 		this.setState({image, imageData: data})
+	}
+
+	onDropRejected(rejectedFiles) {
+		logTitle('App: onDropRejected');
+
+		const messages = rejectedFiles.map(file => {
+			let message = '';
+
+			if (file.size > MAX_ATTACHMENT_SIZE) {
+				message = 'The file ' + file.name + 
+					' is too large.  It should be smaller than ' + 
+					parseInt(MAX_ATTACHMENT_SIZE/1000000, 10) + 'mb. ';
+			} else if (!VALID_ATTACHMENT_TYPES.includes(file.type)) {
+				message = 'The file ' + file.name +
+					' is not an acceptable type.  It should be of type jpg, png, webp or gif. ';
+			}
+
+			return message;
+		});
+
+		const preface = messages.length > 1 ?
+			'Some image files were rejected: ' :
+			'An image file was rejected: ';
+
+		logError(preface + messages.reduce((prev, cur) => prev + cur, ''),
+			'App', 'onDropRejected');
+	}
+
+	onError(err) {
+		logError(err);
 	}
 
 	saveWindowState() {
@@ -118,10 +155,13 @@ class App extends Component {
 	        <div className='App' style={appStyles}>
 	        	<UI windowWidth={windowWidth}>
 					<AvatarEditor
-						disableNotifications={true}
-						imageAvatarWidth={30}
+						avatarType={'creature'}
 						onUpdateCreature={this.onUpdateCreature}
-						onUpdateImage={this.onUpdateImage} />
+						onUpdateImage={this.onUpdateImage}
+						validAttachmentTypes={VALID_ATTACHMENT_TYPES}
+						maxSize={MAX_ATTACHMENT_SIZE}
+						onError={this.onError}
+						onDropRejected={this.onDropRejected} />
 				</UI>
 
 				<Results windowWidth={windowWidth}>

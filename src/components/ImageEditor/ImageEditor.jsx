@@ -10,16 +10,13 @@ import TrashIcon from '../TrashIcon/TrashIcon';
 import CarlSagan from '../../assets/carl-sagan.jpg';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
-import { logTitle, logError, getFileTypeFromPreview,
+import { logTitle, getFileTypeFromPreview,
 	getAttachmentFromPreview, generateCarlSagan } from '../../libs/utils';
 import fileType from '../../libs/file-type/index';
 import readBlob from 'read-blob';
 
 const
-	dropzoneRef = createRef(),
-	MAX_ATTACHMENT_SIZE = 5000000,
-	VALID_ATTACHMENT_TYPES =
-		['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+	dropzoneRef = createRef();
 
 class ImageEditor extends Component {
 	constructor(props) {
@@ -100,11 +97,8 @@ class ImageEditor extends Component {
 			console.log('');
 
 			if (!type) {
-				this.props.postError('Unknown File Type',
+				this.props.onError('Unknown File Type',
 					'Error determining the image\'s file type for ' + file.name);
-
-				logError('Error determining the image\'s file type for ' +
-					file.name, 'SettingsComponent', 'fileDropHandler');
 
 				return;
 			}
@@ -122,40 +116,14 @@ class ImageEditor extends Component {
 			}));
 
 		}).catch(e => {
-			this.props.postError('File Drop Error', 'Error Adding File(s): ' + e.message);
-
-			logError('Error Adding File(s): ' + e.message, 'ImageEditor',
-				'onDrop');
+			this.props.onError('File Drop Error', 'Error Adding File(s): ' + e.message);
 		});
 	}
 
 	onDropRejected(rejectedFiles) {
 		logTitle('ImageEditor: onDropRejected');
 
-		const messages = rejectedFiles.map(file => {
-			let message = '';
-
-			if (file.size > MAX_ATTACHMENT_SIZE) {
-				message = 'The file ' + file.name + 
-					' is too large.  It should be smaller than ' + 
-					parseInt(MAX_ATTACHMENT_SIZE/1000000, 10) + 'mb. ';
-			} else if (!VALID_ATTACHMENT_TYPES.includes(file.type)) {
-				message = 'The file ' + file.name +
-					' is not an acceptable type.  It should be of type jpg, png, webp or gif. ';
-			}
-
-			return message;
-		});
-
-		const preface = messages.length > 1 ?
-			'Some image files were rejected: ' :
-			'An image file was rejected: ';
-
-		this.props.postError('File Drop Error',
-			preface + messages.reduce((prev, cur) => prev + cur, ''));
-
-		logError(preface + messages.reduce((prev, cur) => prev + cur, ''),
-			'ImageEditor', 'onDropRejected');
+		this.props.onDropRejected(rejectedFiles);
 	}
 
 	triggerUpload() {
@@ -269,18 +237,13 @@ class ImageEditor extends Component {
 				}
 
 			}), () => {
-				this.props.postSuccess('Update Successful', 'avatar updated');
-
 				const { file, ...rest } = this.state.image;
 				this.props.onUpdateImage(avatars.scaled, rest);
 			});
 		})
 
 		.catch(e => {
-			this.props.postError('Processing Error', 'Error processing avatar images: ' + e.message);
-
-			logError('Error processing avatar images: ' + e.message,
-				'ImageEditor', 'updateImageAvatar');
+			this.props.onError('Processing Error', 'Error processing avatar images: ' + e.message);
 		});
 
 		console.log('');
@@ -341,6 +304,7 @@ class ImageEditor extends Component {
 			shouldDisableNewImage = this.props.image ? true : false,
 			shouldDisableZoom = this.props.zoom ? true : false,
 			shouldDisableRotation = this.props.rotation ? true : false,
+			{ validAttachmentTypes, maxSize } = this.props,
 
 			editorStyles = {
 				alignItems: 'center',
@@ -407,7 +371,8 @@ class ImageEditor extends Component {
 							onDrop={this.onDrop}
 							onDropRejected={this.onDropRejected}
 							ref={dropzoneRef}
-							accept={VALID_ATTACHMENT_TYPES}
+							accept={validAttachmentTypes}
+							maxSize={maxSize}
 							disabled={shouldDisableNewImage}>
 
 			  				{({getRootProps, getInputProps}) => (
@@ -468,10 +433,12 @@ ImageEditor.propTypes = {
 		y: PropTypes.number
 	}),
 	
-	postError: PropTypes.func,
-	postSuccess: PropTypes.func,
-	imageAvatarWidth: PropTypes.number,
-	onUpdateImage: PropTypes.func
+	onUpdateImage: PropTypes.func,
+	onError: PropTypes.func,
+
+	validAttachmentTypes: PropTypes.array,
+	maxSize: PropTypes.number,
+	onDropRejected: PropTypes.func
 };
 
 export default ImageEditor;

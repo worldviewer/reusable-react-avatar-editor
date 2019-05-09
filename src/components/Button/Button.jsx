@@ -14,6 +14,7 @@ const
 				fontSize: '14px',
 				fontWeight: 'bold',
 				height: '35px',
+				userSelect: 'none',
 				width: '188px'
 			};
 

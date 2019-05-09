@@ -7,8 +7,6 @@ import ImageEditor from '../ImageEditor/ImageEditor';
 import CreatureEditor from '../CreatureEditor/CreatureEditor';
 import { logTitle } from '../../libs/utils';
 import './AvatarEditor.scss';
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
 
 class AvatarEditor extends Component {
 	constructor(props) {
@@ -22,45 +20,6 @@ class AvatarEditor extends Component {
 
 		this.toggleImage = this.toggleImage.bind(this);
 		this.toggleCreature = this.toggleCreature.bind(this);
-		this.postSuccess = this.postSuccess.bind(this);
-		this.postError = this.postError.bind(this);
-		this.notificationDOMRef = React.createRef();
-	}
-
-	postSuccess(title, message) {
-		if (this.props.disableNotifications) {
-			return;
-		}
-
-		this.notificationDOMRef.current.addNotification({
-			title,
-			message,
-			type: "success",
-			insert: "bottom",
-			container: "bottom-center",
-			animationIn: ["animated", "fadeIn"],
-			animationOut: ["animated", "fadeOut"],
-			dismiss: { duration: 3000 },
-			dismissable: { click: true }
-		});
-	}
-
-	postError(title, message) {
-		if (this.props.disableNotifications) {
-			return;
-		}
-
-		this.notificationDOMRef.current.addNotification({
-			title,
-			message,
-			type: "danger",
-			insert: "bottom",
-			container: "bottom-center",
-			animationIn: ["animated", "fadeIn"],
-			animationOut: ["animated", "fadeOut"],
-			dismiss: { duration: 7000 },
-			dismissable: { click: true }
-		});
 	}
 
 	toggleImage() {
@@ -122,9 +81,13 @@ class AvatarEditor extends Component {
 				rotation,
 				position,
 
-				disableNotifications,
 				onUpdateCreature,
-				onUpdateImage
+				onUpdateImage,
+
+				validAttachmentTypes,
+				maxSize,
+				onDropRejected,
+				onError
 			} = this.props,
 
 			is = {
@@ -135,15 +98,14 @@ class AvatarEditor extends Component {
 			avatarType = this.props.avatarType ? this.props.avatarType :
 				this.state.avatarType,
 
-			isControlled = this.props.avatarType ? true : false,
+			isControlled = ['image', 'creature'].includes(this.props.avatarType) ?
+				true : false,
 
 			header = this.state.avatarType === 'image' ?
 				'Edit Image Avatar' : 'Edit Creature Avatar';
 
 		return (
 			<div className='AvatarEditor'>
-		        { disableNotifications ? null : <ReactNotification ref={this.notificationDOMRef} /> }
-
 				<Row>
 					<Header value={header} />
 				</Row>
@@ -167,9 +129,11 @@ class AvatarEditor extends Component {
 							zoom={zoom}
 							rotation={rotation}
 							position={position}
-							postError={this.postError}
-							postSuccess={this.postSuccess}
-							onUpdateImage={onUpdateImage} />
+							onUpdateImage={onUpdateImage}
+							validAttachmentTypes={validAttachmentTypes}
+							maxSize={maxSize}
+							onDropRejected={onDropRejected}
+							onError={onError} />
 					</div>
 
 					<div style={is.creature ? {display: 'block'} : {display: 'none'}}>
@@ -230,11 +194,14 @@ AvatarEditor.propTypes = {
 		x: PropTypes.number,
 		y: PropTypes.number
 	}),
-	imageAvatarWidth: PropTypes.number,
 	
-	disableNotifications: PropTypes.bool,
 	onUpdateCreature: PropTypes.func,
-	onUpdateImage: PropTypes.func
+	onUpdateImage: PropTypes.func,
+	onError: PropTypes.func,
+
+	validAttachmentTypes: PropTypes.array,
+	maxSize: PropTypes.number,
+	onDropRejected: PropTypes.func
 };
 
 export default AvatarEditor;
