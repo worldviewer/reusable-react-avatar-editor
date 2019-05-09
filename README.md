@@ -68,12 +68,12 @@ The following table demonstrates how to prevent the user from changing certain a
 
 ## Other Props
 
-| Prop                 | Type     | Default | Description                                                                                                                                                                                |
-|----------------------|----------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| validAttachmentTypes | array    |         | Optional array of mime type strings describing the filetypes which DropZone should accept.  See https://react-dropzone.js.org/#src for more info.  Violations will trigger onDropRejected. |
-| maxSize              | number   |         | Optional maximum filesize for DropZone.  Violations will trigger onDropRejected.                                                                                                           |
-| onDropRejected       | function |         | This is the callback fired by DropZone.  It sends a list of rejectedFiles as an argument.                                                                                                  |
-| onError              | function |         | Any error produced by this component that is not triggered by DropZone will surface here.  It passes an error message string.                                                              |
+| Prop                 | Type     | Default | Description                                                                                                                                                                                  |
+|----------------------|----------|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| validAttachmentTypes | array    |         | Optional array of mime type strings describing the filetypes which DropZone should accept.  See https://react-dropzone.js.org/#src for more info.  Violations will trigger `onDropRejected`. |
+| maxSize              | number   |         | Optional maximum filesize for DropZone.  Violations will trigger `onDropRejected`.                                                                                                           |
+| onDropRejected       | function |         | This is the callback fired by DropZone.  It sends a list of `rejectedFiles` as an argument.                                                                                                  |
+| onError              | function |         | Any error produced by this component that is not triggered by DropZone will surface here.  It passes an error message string.                                                                |
 
 ## Cross-Site Scripting (XSS) Attack Warning
 

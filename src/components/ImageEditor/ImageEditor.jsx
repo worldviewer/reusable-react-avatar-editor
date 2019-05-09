@@ -202,11 +202,6 @@ class ImageEditor extends Component {
 					newImg = document.createElement('img'),
 					url = URL.createObjectURL(blob);
 
-					newImg.onload = () => {
-						// no longer need to read the blob so it's revoked
-						URL.revokeObjectURL(url);
-					};
-
 				newImg.src = url;
 
 				resolve(newImg.src);

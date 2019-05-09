@@ -155,7 +155,6 @@ class App extends Component {
 	        <div className='App' style={appStyles}>
 	        	<UI windowWidth={windowWidth}>
 					<AvatarEditor
-						avatarType={'creature'}
 						onUpdateCreature={this.onUpdateCreature}
 						onUpdateImage={this.onUpdateImage}
 						validAttachmentTypes={VALID_ATTACHMENT_TYPES}
