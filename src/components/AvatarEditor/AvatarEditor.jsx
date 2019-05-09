@@ -9,103 +9,103 @@ import { logTitle } from '../../libs/utils';
 import './AvatarEditor.scss';
 
 class AvatarEditor extends Component {
-	constructor(props) {
-		super(props);
+    constructor(props) {
+        super(props);
 
-		this.state = {
-			avatarType: 'image'
-		};
+        this.state = {
+            avatarType: 'image'
+        };
 
-		this.props = props;
+        this.props = props;
 
-		this.toggleImage = this.toggleImage.bind(this);
-		this.toggleCreature = this.toggleCreature.bind(this);
-	}
+        this.toggleImage = this.toggleImage.bind(this);
+        this.toggleCreature = this.toggleCreature.bind(this);
+    }
 
-	toggleImage() {
-		logTitle('AvatarEditor: Toggling to image');
+    toggleImage() {
+        logTitle('AvatarEditor: Toggling to image');
 
-		this.setState({avatarType: 'image'});
-	}
+        this.setState({ avatarType: 'image' });
+    }
 
-	toggleCreature() {
-		logTitle('AvatarEditor: Toggling to creature');
+    toggleCreature() {
+        logTitle('AvatarEditor: Toggling to creature');
 
-		this.setState({avatarType: 'creature'});
-	}
+        this.setState({ avatarType: 'creature' });
+    }
 
-	componentDidMount() {
-		const { defaultAvatarType, avatarType, image, creature } = this.props;
+    componentDidMount() {
+        const { defaultAvatarType, avatarType, image, creature } = this.props;
 
-		if (avatarType) {
-			this.setState({avatarType});
+        if (avatarType) {
+            this.setState({ avatarType });
 
-		} else if (image) {
-			this.toggleImage();
+        } else if (image) {
+            this.toggleImage();
 
-		} else if (creature) {
-			this.toggleCreature();
+        } else if (creature) {
+            this.toggleCreature();
 
-		} else if (defaultAvatarType) {
-			this.setState({
-				avatarType: defaultAvatarType
-			});
+        } else if (defaultAvatarType) {
+            this.setState({
+                avatarType: defaultAvatarType
+            });
 
-		} else if (this.props.defaultImage) {
-			logTitle('AvatarEditor: componentDidMount');
-			console.log('Setting default image');
-			console.log('');
+        } else if (this.props.defaultImage) {
+            logTitle('AvatarEditor: componentDidMount');
+            console.log('Setting default image');
+            console.log('');
 
-			this.toggleImage();
+            this.toggleImage();
 
-		} else if (this.props.defaultCreature) {
-			logTitle('AvatarEditor: componentDidMount');
-			console.log('Setting default creature');
-			console.log('');
+        } else if (this.props.defaultCreature) {
+            logTitle('AvatarEditor: componentDidMount');
+            console.log('Setting default creature');
+            console.log('');
 
-			this.toggleCreature();
-		}
-	}
+            this.toggleCreature();
+        }
+    }
 
-	render() {
-		const {
-				defaultImage,
-				defaultCreature,
-				defaultZoom,
-				defaultRotation,
-				defaultPosition,
+    render() {
+        const {
+            defaultImage,
+            defaultCreature,
+            defaultZoom,
+            defaultRotation,
+            defaultPosition,
 
-				image,
-				creature,
-				zoom,
-				rotation,
-				position,
+            image,
+            creature,
+            zoom,
+            rotation,
+            position,
 
-				onUpdateCreature,
-				onUpdateImage,
+            onUpdateCreature,
+            onUpdateImage,
 
-				validAttachmentTypes,
-				maxSize,
-				onDropRejected,
-				onError
-			} = this.props,
+            validAttachmentTypes,
+            maxSize,
+            onDropRejected,
+            onError
+        } = this.props,
 
-			is = {
-				creature: this.state.avatarType === 'creature',
-				image: this.state.avatarType === 'image'
-			},
+            is = {
+                creature: this.state.avatarType === 'creature',
+                image: this.state.avatarType === 'image'
+            },
 
-			avatarType = this.props.avatarType ? this.props.avatarType :
-				this.state.avatarType,
+            avatarType = this.props.avatarType ? this.props.avatarType :
+            this.state.avatarType,
 
-			isControlled = ['image', 'creature'].includes(this.props.avatarType) ?
-				true : false,
+            isControlled = ['image', 'creature'].includes(this.props.avatarType) ?
+            true : false,
 
-			header = this.state.avatarType === 'image' ?
-				'Edit Image Avatar' : 'Edit Creature Avatar';
+            header = this.state.avatarType === 'image' ?
+            'Edit Image Avatar' : 'Edit Creature Avatar';
 
-		return (
-			<div className='AvatarEditor'>
+        return (
+            <div className='AvatarEditor'>
 				<Row>
 					<Header value={header} />
 				</Row>
@@ -144,64 +144,64 @@ class AvatarEditor extends Component {
 					</div>
 				</Row>
 			</div>
-		);
-	}
+        );
+    }
 }
 
 AvatarEditor.propTypes = {
-	defaultImage: PropTypes.string,
-	defaultCreature: PropTypes.shape({
-		form: PropTypes.shape({
-			pattern: PropTypes.number,
-			colors: PropTypes.number
-		}),
-		mouth: PropTypes.shape({
-			pattern: PropTypes.number,
-			colors: PropTypes.number
-		}),
-		eye: PropTypes.shape({
-			pattern: PropTypes.number,
-			colors: PropTypes.number
-		})
-	}),
-	defaultAvatarType: PropTypes.oneOf(['image', 'creature']),
-	defaultZoom: PropTypes.number,
-	defaultRotation: PropTypes.number,
-	defaultPosition: PropTypes.shape({
-		x: PropTypes.number,
-		y: PropTypes.number
-	}),
+    defaultImage: PropTypes.string,
+    defaultCreature: PropTypes.shape({
+        form: PropTypes.shape({
+            pattern: PropTypes.number,
+            colors: PropTypes.number
+        }),
+        mouth: PropTypes.shape({
+            pattern: PropTypes.number,
+            colors: PropTypes.number
+        }),
+        eye: PropTypes.shape({
+            pattern: PropTypes.number,
+            colors: PropTypes.number
+        })
+    }),
+    defaultAvatarType: PropTypes.oneOf(['image', 'creature']),
+    defaultZoom: PropTypes.number,
+    defaultRotation: PropTypes.number,
+    defaultPosition: PropTypes.shape({
+        x: PropTypes.number,
+        y: PropTypes.number
+    }),
 
-	image: PropTypes.string,
-	creature: PropTypes.shape({
-		form: PropTypes.shape({
-			pattern: PropTypes.number,
-			colors: PropTypes.number
-		}),
-		mouth: PropTypes.shape({
-			pattern: PropTypes.number,
-			colors: PropTypes.number
-		}),
-		eye: PropTypes.shape({
-			pattern: PropTypes.number,
-			colors: PropTypes.number
-		})
-	}),
-	avatarType: PropTypes.oneOf(['image', 'creature']),
-	zoom: PropTypes.number,
-	rotation: PropTypes.number,
-	position: PropTypes.shape({
-		x: PropTypes.number,
-		y: PropTypes.number
-	}),
-	
-	onUpdateCreature: PropTypes.func,
-	onUpdateImage: PropTypes.func,
-	onError: PropTypes.func,
+    image: PropTypes.string,
+    creature: PropTypes.shape({
+        form: PropTypes.shape({
+            pattern: PropTypes.number,
+            colors: PropTypes.number
+        }),
+        mouth: PropTypes.shape({
+            pattern: PropTypes.number,
+            colors: PropTypes.number
+        }),
+        eye: PropTypes.shape({
+            pattern: PropTypes.number,
+            colors: PropTypes.number
+        })
+    }),
+    avatarType: PropTypes.oneOf(['image', 'creature']),
+    zoom: PropTypes.number,
+    rotation: PropTypes.number,
+    position: PropTypes.shape({
+        x: PropTypes.number,
+        y: PropTypes.number
+    }),
 
-	validAttachmentTypes: PropTypes.array,
-	maxSize: PropTypes.number,
-	onDropRejected: PropTypes.func
+    onUpdateCreature: PropTypes.func,
+    onUpdateImage: PropTypes.func,
+    onError: PropTypes.func,
+
+    validAttachmentTypes: PropTypes.array,
+    maxSize: PropTypes.number,
+    onDropRejected: PropTypes.func
 };
 
 export default AvatarEditor;

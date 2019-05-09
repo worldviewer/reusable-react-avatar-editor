@@ -1,17 +1,17 @@
 .CreatureEditor {
-	.noselect {
-		user-select: none; /* currently supported by Chrome and Opera */
-	}
+    .noselect {
+        user-select: none;
+    }
 
-	.Button {
-		background-color: #00c853;
+    .Button {
+        background-color: #00c853;
 
-		&:hover {
-			background-color: #1AB14F;
-		}
+        &:hover {
+            background-color: #1AB14F;
+        }
 
-		&:active {
-			background-color: #008b39;
-		}
-	}
+        &:active {
+            background-color: #008b39;
+        }
+    }
 }

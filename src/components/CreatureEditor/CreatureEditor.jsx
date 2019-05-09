@@ -11,97 +11,95 @@ import './CreatureEditor.scss';
 import svgAvatar from '../../libs/SvgAvatar/index';
 
 class CreatureEditor extends Component {
-	constructor(props) {
-		super(props);
+    constructor(props) {
+        super(props);
 
-		this.state = {
-			creature: {
-				form: {
-					pattern: 0,
-					colors: 0
-				},
-				mouth: {
-					pattern: 0,
-					colors: 0
-				},
-				eye: {
-					pattern: 0,
-					colors: 0
-				}
-			},
+        this.state = {
+            creature: {
+                form: {
+                    pattern: 0,
+                    colors: 0
+                },
+                mouth: {
+                    pattern: 0,
+                    colors: 0
+                },
+                eye: {
+                    pattern: 0,
+                    colors: 0
+                }
+            },
 
-			creatureSVG: ''
-		}
+            creatureSVG: ''
+        }
 
-		this.props = props;
+        this.props = props;
 
-		this.changeCreature = this.changeCreature.bind(this);
-		this.updateCreatureAvatar = this.updateCreatureAvatar.bind(this);
-	}
+        this.changeCreature = this.changeCreature.bind(this);
+        this.updateCreatureAvatar = this.updateCreatureAvatar.bind(this);
+    }
 
-	async changeCreature() {
-		const
-			creature = svgAvatar.random_avatar(),
-			creatureSVG = svgAvatar.render_svg(creature);
+    async changeCreature() {
+        const
+            creature = svgAvatar.random_avatar(),
+            creatureSVG = svgAvatar.render_svg(creature);
 
-		await this.setState({creature, creatureSVG});
+        await this.setState({ creature, creatureSVG });
 
-		logTitle('CreatureEditor: Generating random avatar');
-		console.log(creature);
-		console.log(this.state.creatureSVG);
-		console.log('');
-	}
+        logTitle('CreatureEditor: Generating random avatar');
+        console.log(creature);
+        console.log(this.state.creatureSVG);
+        console.log('');
+    }
 
-	updateCreatureAvatar(event) {
-		event.preventDefault();
+    updateCreatureAvatar(event) {
+        event.preventDefault();
 
-		logTitle('CreatureEditor: updateCreatureAvatar');
+        logTitle('CreatureEditor: updateCreatureAvatar');
 
-		this.props.onUpdateCreature(this.state.creature);
-	}
+        this.props.onUpdateCreature(this.state.creature);
+    }
 
-	componentDidMount() {
-		const
-			{ defaultCreature } = this.props,
-			controlledCreature = this.props.creature;
+    componentDidMount() {
+        const { defaultCreature } = this.props,
+            controlledCreature = this.props.creature;
 
-		if (controlledCreature) {
-			const
-				creatureSVG = svgAvatar.render_svg(controlledCreature);
+        if (controlledCreature) {
+            const
+                creatureSVG = svgAvatar.render_svg(controlledCreature);
 
-			this.setState({
-				creature: controlledCreature,
-				creatureSVG
-			});
+            this.setState({
+                creature: controlledCreature,
+                creatureSVG
+            });
 
-		} else if (defaultCreature) {
-			const
-				creatureSVG = svgAvatar.render_svg(defaultCreature);
+        } else if (defaultCreature) {
+            const
+                creatureSVG = svgAvatar.render_svg(defaultCreature);
 
-			this.setState({
-				creature: defaultCreature,
-				creatureSVG
-			});
+            this.setState({
+                creature: defaultCreature,
+                creatureSVG
+            });
 
-		} else {
-			this.changeCreature();
-		}
-	}
+        } else {
+            this.changeCreature();
+        }
+    }
 
-	render() {
-		const
-			{ creatureSVG } = this.state,
+    render() {
+        const { creatureSVG } = this.state,
 
-			creatureStyles = {
-				marginBottom: '27px',
-				marginTop: '25px',
-				width: '188px'
-			},
+            creatureStyles = {
+                marginBottom: '27px',
+                marginTop: '25px',
+                width: '188px'
+            },
 
-			isControlledCreature = this.props.creature ? true : false;
+            isControlledCreature = this.props.creature ? true : false;
 
-		return (
-			<div>
+        return (
+            <div>
 				<Row>
 					<svg viewBox="0 0 500 500" key='creature'
 						dangerouslySetInnerHTML={{__html: creatureSVG}}
@@ -122,41 +120,41 @@ class CreatureEditor extends Component {
 					</Button>
 				</Row>
 			</div>
-		);
-	}
+        );
+    }
 }
 
 CreatureEditor.propTypes = {
-	defaultCreature: PropTypes.shape({
-		form: PropTypes.shape({
-			pattern: PropTypes.number,
-			colors: PropTypes.number
-		}),
-		mouth: PropTypes.shape({
-			pattern: PropTypes.number,
-			colors: PropTypes.number
-		}),
-		eye: PropTypes.shape({
-			pattern: PropTypes.number,
-			colors: PropTypes.number
-		})
-	}),
-	creature: PropTypes.shape({
-		form: PropTypes.shape({
-			pattern: PropTypes.number,
-			colors: PropTypes.number
-		}),
-		mouth: PropTypes.shape({
-			pattern: PropTypes.number,
-			colors: PropTypes.number
-		}),
-		eye: PropTypes.shape({
-			pattern: PropTypes.number,
-			colors: PropTypes.number
-		})
-	}),
-	
-	onUpdateCreature: PropTypes.func
+    defaultCreature: PropTypes.shape({
+        form: PropTypes.shape({
+            pattern: PropTypes.number,
+            colors: PropTypes.number
+        }),
+        mouth: PropTypes.shape({
+            pattern: PropTypes.number,
+            colors: PropTypes.number
+        }),
+        eye: PropTypes.shape({
+            pattern: PropTypes.number,
+            colors: PropTypes.number
+        })
+    }),
+    creature: PropTypes.shape({
+        form: PropTypes.shape({
+            pattern: PropTypes.number,
+            colors: PropTypes.number
+        }),
+        mouth: PropTypes.shape({
+            pattern: PropTypes.number,
+            colors: PropTypes.number
+        }),
+        eye: PropTypes.shape({
+            pattern: PropTypes.number,
+            colors: PropTypes.number
+        })
+    }),
+
+    onUpdateCreature: PropTypes.func
 };
 
 export default CreatureEditor;

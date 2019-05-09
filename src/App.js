@@ -6,11 +6,12 @@ import Header from './components/Header/Header';
 import Line from './components/Line/Line';
 import AvatarEditor from './components/AvatarEditor/AvatarEditor';
 import ImageAvatar from './components/ImageAvatar/ImageAvatar';
-import neptune from './assets/neptune.jpg';
-import plasmaBall from './assets/plasma-ball.jpg';
 import { logTitle, logError } from './libs/utils';
 import svgAvatar from './libs/SvgAvatar/index';
 import ReactJson from 'react-json-view';
+
+// import neptune from './assets/neptune.jpg';
+// import plasmaBall from './assets/plasma-ball.jpg';
 
 const
 	MAX_ATTACHMENT_SIZE = 5000000,

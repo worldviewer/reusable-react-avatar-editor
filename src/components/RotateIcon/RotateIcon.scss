@@ -1,12 +1,12 @@
 .RotateIcon {
-	transform: scaleY(-1);
+    transform: scaleY(-1);
 
-	&:hover {
-		fill: #1AB14F;
-	}
+    &:hover {
+        fill: #1AB14F;
+    }
 
-	&:active {
-		fill: #008b39;
-		transform: scaleY(-1) rotate(-45deg);
-	}
+    &:active {
+        fill: #008b39;
+        transform: scaleY(-1) rotate(-45deg);
+    }
 }
