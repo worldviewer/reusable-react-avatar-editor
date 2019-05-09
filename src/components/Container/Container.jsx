@@ -3,7 +3,7 @@ import React from 'react';
 const
 	containerStyles = {
 		fontFamily: 'sans-serif',
-		position: 'fixed',
+		position: 'relative',
 		transform: 'translateY(-50%)',
 		top: '50%',
 		width: '100%'

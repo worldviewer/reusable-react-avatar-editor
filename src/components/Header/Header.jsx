@@ -5,9 +5,11 @@ const
 		textAlign: 'center'
 	},
 
-	Header = props =>
-		<h1 style={headerStyles} {...props}>
-			Edit {props.value === 'creature' ? 'Creature' : 'Image'} Avatar
-		</h1>;
+	Header = props => {
+		return props.disabled ? null :
+			<h1 style={headerStyles} {...props}>
+				{props.value}
+			</h1>;
+	}
 
 export default Header;

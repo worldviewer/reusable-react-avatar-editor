@@ -222,7 +222,6 @@ class ImageEditor extends Component {
 		console.log(document.editor);
 
 		let avatars = {
-			original: null,
 			scaled: null,
 			type: null
 		};
@@ -242,33 +241,21 @@ class ImageEditor extends Component {
 
 				newImg.src = url;
 
-				resolve(getAttachmentFromPreview(newImg.src));
+				resolve(newImg.src);
 			}, fileType, 1);
 		})
 
-		.then(scaled => {
+		.then(async scaled => {
 			avatars.scaled = scaled;
 
-			return new Promise(async (resolve, reject) => {
-				const original =
-					await getAttachmentFromPreview(this.state.image.file.preview);
-
-				resolve(original);
-			});
-		})
-
-		.then(async original => {
-			avatars.original = original;
+			const attachment =
+				await getAttachmentFromPreview(this.state.image.file.preview);
 
 			avatars.type = await
-				fileType(new Uint8Array(original)).mime;
+				fileType(new Uint8Array(attachment)).mime;
 
 			logTitle('ImageEditor: Image type');
 			console.log(avatars.type);
-			console.log('');
-
-			logTitle('ImageEditor: Unscaled image');
-			console.log(avatars.original);
 			console.log('');
 
 			logTitle('ImageEditor: Scaled image');
@@ -280,19 +267,20 @@ class ImageEditor extends Component {
 					...prevState.image,
 					type: avatars.type
 				}
-			}));
 
-			this.props.postSuccess('Update Successful', 'avatar updated');
+			}), () => {
+				this.props.postSuccess('Update Successful', 'avatar updated');
 
-			const { file, ...rest } = this.state.image;
-			this.props.onUpdateImage(file.preview, rest);
+				const { file, ...rest } = this.state.image;
+				this.props.onUpdateImage(avatars.scaled, rest);
+			});
 		})
 
 		.catch(e => {
 			this.props.postError('Processing Error', 'Error processing avatar images: ' + e.message);
 
 			logError('Error processing avatar images: ' + e.message,
-				'AvatarEditor', 'updateImageAvatar');
+				'ImageEditor', 'updateImageAvatar');
 		});
 
 		console.log('');

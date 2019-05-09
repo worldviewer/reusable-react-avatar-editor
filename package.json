@@ -14,6 +14,7 @@
     "react-dom": "^16.8.6",
     "react-dropzone": "^10.1.4",
     "react-icons": "^3.6.1",
+    "react-json-view": "^1.19.1",
     "react-notifications-component": "^1.1.1",
     "react-scripts": "3.0.0",
     "read-blob": "^1.1.0"

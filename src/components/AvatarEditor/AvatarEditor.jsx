@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Container from '../Container/Container';
 import Row from '../Row/Row';
 import Header from '../Header/Header';
 import Toggle from '../Toggle/Toggle';
@@ -136,14 +135,17 @@ class AvatarEditor extends Component {
 			avatarType = this.props.avatarType ? this.props.avatarType :
 				this.state.avatarType,
 
-			isControlled = this.props.avatarType ? true : false;
+			isControlled = this.props.avatarType ? true : false,
+
+			header = this.state.avatarType === 'image' ?
+				'Edit Image Avatar' : 'Edit Creature Avatar';
 
 		return (
-			<Container>
+			<div className='AvatarEditor'>
 		        { disableNotifications ? null : <ReactNotification ref={this.notificationDOMRef} /> }
 
 				<Row>
-					<Header value={this.state.avatarType} />
+					<Header value={header} />
 				</Row>
 
 				<Row>
@@ -177,7 +179,7 @@ class AvatarEditor extends Component {
 							onUpdateCreature={onUpdateCreature} />
 					</div>
 				</Row>
-			</Container>
+			</div>
 		);
 	}
 }

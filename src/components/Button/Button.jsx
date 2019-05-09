@@ -3,7 +3,7 @@ import React from 'react';
 const
 	Button = props => {
 		const
-			isControlled = props.isControlled,
+			{ isControlled, ...rest } = props,
 
 			buttonStyles = {
 				backgroundColor: isControlled ? '#b4eecd' : null,
@@ -15,14 +15,16 @@ const
 				fontWeight: 'bold',
 				height: '35px',
 				width: '188px'
-			},
-
-			rest = {...props};
+			};
 
 			delete rest.isControlled;
 
 		return (
-			<button className='Button' style={buttonStyles} disabled={isControlled} {...rest}>
+			<button
+				className='Button'
+				style={buttonStyles}
+				disabled={isControlled} {...rest}>
+
 				{props.children}
 			</button>
 		);

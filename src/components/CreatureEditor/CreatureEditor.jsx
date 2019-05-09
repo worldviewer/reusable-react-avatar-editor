@@ -101,7 +101,7 @@ class CreatureEditor extends Component {
 			isControlledCreature = this.props.creature ? true : false;
 
 		return (
-			<form onSubmit={this.updateCreatureAvatar}>
+			<div>
 				<Row>
 					<svg viewBox="0 0 500 500" key='creature'
 						dangerouslySetInnerHTML={{__html: creatureSVG}}
@@ -117,11 +117,11 @@ class CreatureEditor extends Component {
 				</Row>
 
 				<Row>
-					<Button type='submit'>
+					<Button onClick={this.updateCreatureAvatar}>
 						Update
 					</Button>
 				</Row>
-			</form>
+			</div>
 		);
 	}
 }
