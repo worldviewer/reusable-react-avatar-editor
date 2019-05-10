@@ -95,5 +95,4 @@ In other words, if you are integrating this component into a larger client-serve
 
 ## Outputs
 
-Pressing the `Update` button will output the results.  For creatures, this will be the creature data in object form (which must be rendered using `SvgCreature`).  For images, this will be the cropped, zoomed, positioned result at the original resolution.
-
+Pressing the `Update` button will output the results.  For creatures, this will be the creature data in object form (which must be rendered using `SvgCreature`).  For images, this will be (1) the cropped, zoomed, positioned result at the original resolution; and (2) the data (cropping, zoom and positioning) which was used to transform the original into the final avatar image.
