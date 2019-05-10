@@ -90,11 +90,6 @@ class AvatarEditor extends Component {
             onError
         } = this.props,
 
-            is = {
-                creature: this.state.avatarType === 'creature',
-                image: this.state.avatarType === 'image'
-            },
-
             avatarType = this.props.avatarType ? this.props.avatarType :
             this.state.avatarType,
 
@@ -102,7 +97,7 @@ class AvatarEditor extends Component {
             true : false,
 
             header = this.state.avatarType === 'image' ?
-            'Edit Image Avatar' : 'Edit Creature Avatar';
+                'Edit Image Avatar' : 'Edit Creature Avatar';
 
         return (
             <div className='AvatarEditor'>
@@ -115,33 +110,33 @@ class AvatarEditor extends Component {
 						value={avatarType}
 						isControlled={isControlled}
 						toggleImageHandler={this.toggleImage}
-						toggleCreatureHandler={this.toggleCreature} />
-				</Row>
+						toggleCreatureHandler={this.toggleCreature}>
 
-				<Row>
-					<div style={is.image ? {display: 'block'} : {display: 'none'}}>
-						<ImageEditor
-							defaultImage={defaultImage}
-							defaultZoom={defaultZoom}
-							defaultRotation={defaultRotation}
-							defaultPosition={defaultPosition}
-							image={image}
-							zoom={zoom}
-							rotation={rotation}
-							position={position}
-							onUpdateImage={onUpdateImage}
-							validAttachmentTypes={validAttachmentTypes}
-							maxSize={maxSize}
-							onDropRejected={onDropRejected}
-							onError={onError} />
-					</div>
+                        <Toggle.Image>
+                            <ImageEditor
+                                defaultImage={defaultImage}
+                                defaultZoom={defaultZoom}
+                                defaultRotation={defaultRotation}
+                                defaultPosition={defaultPosition}
+                                image={image}
+                                zoom={zoom}
+                                rotation={rotation}
+                                position={position}
+                                onUpdateImage={onUpdateImage}
+                                validAttachmentTypes={validAttachmentTypes}
+                                maxSize={maxSize}
+                                onDropRejected={onDropRejected}
+                                onError={onError} />
+                        </Toggle.Image>
 
-					<div style={is.creature ? {display: 'block'} : {display: 'none'}}>
-						<CreatureEditor
-							defaultCreature={defaultCreature}
-							creature={creature}
-							onUpdateCreature={onUpdateCreature} />
-					</div>
+                        <Toggle.Creature>
+                            <CreatureEditor
+                                defaultCreature={defaultCreature}
+                                creature={creature}
+                                onUpdateCreature={onUpdateCreature} />
+                        </Toggle.Creature>
+
+                    </Toggle>
 				</Row>
 			</div>
         );

@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { Component } from 'react';
+import Row from '../Row/Row';
 
-const
-    Toggle = props => {
+class Toggle extends Component {
+    constructor(props) {
+        super(props);
+
+        this.props = props;
+    }
+
+    static Image = ({ avatarType, children }) =>
+        (avatarType === 'image' ? children : null);
+
+    static Creature = ({ avatarType, children }) =>
+        (avatarType === 'creature' ? children : null);
+
+    render() {
         const
-            avatarType = props.value,
-            isControlledComponent = props.isControlled,
+            avatarType = this.props.value,
+            isControlledComponent = this.props.isControlled,
 
             toggleStyles = {
                 border: '1px solid #e0e0e0',
@@ -30,29 +43,48 @@ const
                 fontSize: '14px',
                 fontWeight: 'normal',
                 pointerEvents: isControlledComponent ? 'none' : 'auto'
+            },
+
+            wrapperStyles = {
+                display: 'block',
+                margin: '0 auto',
+                width: '176px'
+            },
+
+            buttonStyles = {
+                marginBottom: '20px',
+                width: '176px'
             };
 
         return (
-            <div style={{width: '176px'}}>
-				<div style={avatarType === 'image' ?
-					activeToggleStyles : inactiveToggleStyles}
-					className={'noselect ImageToggle ' +
-						(avatarType === 'image' ? 'active' : 'inactive')}
-					onClick={props.toggleImageHandler}>
+            <div style={wrapperStyles}>
+                <Row style={buttonStyles}>
+                    <div style={avatarType === 'image' ?
+                        activeToggleStyles : inactiveToggleStyles}
+                        className={'noselect ImageToggle ' +
+                            (avatarType === 'image' ? 'active' : 'inactive')}
+                        onClick={this.props.toggleImageHandler}>
 
-					Image
-				</div>
+                        Image
+                    </div>
 
-				<div style={avatarType === 'creature' ?
-					activeToggleStyles : inactiveToggleStyles}
-					className={'noselect CreatureToggle ' +
-						(avatarType === 'creature' ? 'active' : 'inactive')}
-					onClick={props.toggleCreatureHandler}>
+                    <div style={avatarType === 'creature' ?
+                        activeToggleStyles : inactiveToggleStyles}
+                        className={'noselect CreatureToggle ' +
+                            (avatarType === 'creature' ? 'active' : 'inactive')}
+                        onClick={this.props.toggleCreatureHandler}>
 
-					Creature
-				</div>
-			</div>
+                        Creature
+                    </div>
+                </Row>
+
+                <Row>
+                    { React.Children.map(this.props.children, child =>
+                        React.cloneElement(child, { avatarType })) }
+                </Row>
+            </div>
         );
     };
+}
 
 export default Toggle;

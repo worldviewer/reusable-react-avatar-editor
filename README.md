@@ -75,6 +75,8 @@ The following table demonstrates how to prevent the user from changing certain a
 | onDropRejected       | function |         | This is the callback fired by DropZone.  It sends a list of `rejectedFiles` as an argument.                                                                                                  |
 | onError              | function |         | Any error produced by this component that is not triggered by DropZone will surface here.  It passes an error message string.                                                                |
 
+Note that there are a number of additional props that can be applied to DropZone which I have not exposed in order to keep this component simple.
+
 ## Cross-Site Scripting (XSS) Attack Warning
 
 If you didn't already know, now you do: SVG is XML, and XML can contain JavaScript, so generating SVG within the app from a string-based representation is considered treacherous since it provides a potential path for users to inject JavaScript into server backends from clients.  For this reason, Facebook uses syntax in React for this very situation which is designed to encourage developers to sanitize the input from cross-site scripting attacks, like so:
