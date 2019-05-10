@@ -4,9 +4,6 @@
 //
 // ./node_modules/svg_avatar/index.js
 // 6:9-21 Critical dependency: the request of a dependency is an expression
-//
-// But, there is no reason for this dynamic loader, because load_lib is never
-// called w/ lib (wtf?)
 
 // function load_lib(lib){
 // 	if(lib){
