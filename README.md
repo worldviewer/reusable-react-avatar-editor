@@ -13,11 +13,17 @@ Once the component is working, as time permits, I will refactor the component wi
 The avatar editor component allows the user to choose between two different types of avatar: image or creature.  Since new creatures can be created with a set of random numbers, we can automatically assign creature avatars to new users - presumably without concern that the system will be flooded with a lot of identical avatars for new users.
 
 <p align="center">
-    <img width="100%" src="https://github.com/worldviewer/reusable-react-avatar-editor/blob/master/images/image-editor.png" />
+    <img width="50%" src="https://github.com/worldviewer/reusable-react-avatar-editor/blob/master/images/image-editor.png" />
 </p>
 
 <p align="center">
-    <img width="100%" src="https://github.com/worldviewer/reusable-react-avatar-editor/blob/master/images/creature-editor.png" />
+    <img width="50%" src="https://github.com/worldviewer/reusable-react-avatar-editor/blob/master/images/creature-editor.png" />
+</p>
+
+A wrapper has been added to the `AvatarEditor` component in order to demonstrate its usage:
+
+<p align="center">
+    <img width="50%" src="https://github.com/worldviewer/reusable-react-avatar-editor/blob/master/images/demo-snapshot.png" />
 </p>
 
 The project will bring together five existing React dependencies into one single React component:
