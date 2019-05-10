@@ -69,32 +69,32 @@ class AvatarEditor extends Component {
 
     render() {
         const {
-            defaultImage,
-            defaultCreature,
-            defaultZoom,
-            defaultRotation,
-            defaultPosition,
+                defaultImage,
+                defaultCreature,
+                defaultZoom,
+                defaultRotation,
+                defaultPosition,
 
-            image,
-            creature,
-            zoom,
-            rotation,
-            position,
+                image,
+                creature,
+                zoom,
+                rotation,
+                position,
 
-            onUpdateCreature,
-            onUpdateImage,
+                onUpdateCreature,
+                onUpdateImage,
 
-            validAttachmentTypes,
-            maxSize,
-            onDropRejected,
-            onError
-        } = this.props,
+                validAttachmentTypes,
+                maxSize,
+                onDropRejected,
+                onError
+            } = this.props,
 
             avatarType = this.props.avatarType ? this.props.avatarType :
-            this.state.avatarType,
+                this.state.avatarType,
 
             isControlled = ['image', 'creature'].includes(this.props.avatarType) ?
-            true : false,
+                true : false,
 
             header = this.state.avatarType === 'image' ?
                 'Edit Image Avatar' : 'Edit Creature Avatar';
