@@ -5,8 +5,8 @@ const
 
     const
         buttonStyles = {
-            backgroundColor: isControlled ? '#b4eecd' : null,
-            borderColor: isControlled ? '#b4eecd' : null,
+            backgroundColor: isControlled && '#b4eecd',
+            borderColor: isControlled && '#b4eecd',
             borderRadius: '4px',
             color: 'white',
             cursor: 'pointer',
