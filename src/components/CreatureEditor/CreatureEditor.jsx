@@ -36,7 +36,6 @@ class CreatureEditor extends Component {
         this.props = props;
 
         this.changeCreature = this.changeCreature.bind(this);
-        this.updateCreatureAvatar = this.updateCreatureAvatar.bind(this);
     }
 
     async changeCreature() {
@@ -48,16 +47,8 @@ class CreatureEditor extends Component {
 
         logTitle('CreatureEditor: Generating random avatar');
         console.log(creature);
-        console.log(this.state.creatureSVG);
+        console.log(creatureSVG);
         console.log('');
-    }
-
-    updateCreatureAvatar(event) {
-        event.preventDefault();
-
-        logTitle('CreatureEditor: updateCreatureAvatar');
-
-        this.props.onUpdateCreature(this.state.creature);
     }
 
     componentDidMount() {
@@ -88,7 +79,7 @@ class CreatureEditor extends Component {
     }
 
     render() {
-        const { creatureSVG } = this.state,
+        const { creatureSVG, creature } = this.state,
 
             creatureStyles = {
                 marginBottom: '27px',
@@ -96,7 +87,8 @@ class CreatureEditor extends Component {
                 width: '188px'
             },
 
-            isControlledCreature = this.props.creature ? true : false;
+            isControlledCreature = this.props.creature ? true : false,
+            { onUpdateCreature } = this.props;
 
         return (
             <div>
@@ -115,7 +107,7 @@ class CreatureEditor extends Component {
 				</Row>
 
 				<Row>
-					<Button onClick={this.updateCreatureAvatar}>
+					<Button onClick={() => onUpdateCreature(creature)}>
 						Update
 					</Button>
 				</Row>

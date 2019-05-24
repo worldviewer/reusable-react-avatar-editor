@@ -17,8 +17,6 @@ const
             width: '188px'
         };
 
-        delete rest.isControlled;
-
         return (
             <button
 				className='Button'

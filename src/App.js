@@ -80,13 +80,13 @@ class App extends Component {
 		this.setState({creature, creatureSVG});
 	}
 
-	onUpdateImage(image, data) {
+	onUpdateImage(image, imageData) {
 		logTitle('App: onUpdateImage');
 		console.log(image);
-		console.log(data);
+		console.log(imageData);
 		console.log('');
 
-		this.setState({image, imageData: data})
+		this.setState({image, imageData})
 	}
 
 	onDropRejected(rejectedFiles) {
