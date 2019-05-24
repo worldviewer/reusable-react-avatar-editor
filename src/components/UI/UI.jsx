@@ -1,6 +1,6 @@
 import React from 'react';
 
-const UI = props => {
+const UI = ({windowWidth, children, ...props}) => {
     const
         desktopUIStyles = {
             alignItems: 'center',
@@ -15,8 +15,8 @@ const UI = props => {
         };
 
     return (
-        <div style={props.windowWidth > 800 ? desktopUIStyles : mobileUIStyles}>
-			{props.children}
+        <div style={windowWidth > 800 ? desktopUIStyles : mobileUIStyles}>
+			{children}
 		</div>
     );
 };

@@ -1,9 +1,9 @@
 import React from 'react';
 
 const
-    Button = props => {
-        const { isControlled, ...rest } = props,
+    Button = ({isControlled, children, ...props}) => {
 
+    const
         buttonStyles = {
             backgroundColor: isControlled ? '#b4eecd' : null,
             borderColor: isControlled ? '#b4eecd' : null,
@@ -21,9 +21,9 @@ const
             <button
 				className='Button'
 				style={buttonStyles}
-				disabled={isControlled} {...rest}>
+				disabled={isControlled} {...props}>
 
-				{props.children}
+				{children}
 			</button>
         );
     }

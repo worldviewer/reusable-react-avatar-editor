@@ -5,10 +5,10 @@ const
         textAlign: 'center'
     },
 
-    Header = props => {
-        return props.disabled ? null :
-            <h1 style={headerStyles} {...props}>
-				{props.value}
+    Header = ({disabled, value, ...rest}) => {
+        return disabled ? null :
+            <h1 style={headerStyles} {...rest}>
+				{value}
 			</h1>;
     }
 

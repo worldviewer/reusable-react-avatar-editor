@@ -17,7 +17,9 @@ class Toggle extends Component {
     render() {
         const
             avatarType = this.props.value,
-            isControlledComponent = this.props.isControlled,
+            { isControlledComponent,
+                toggleImageHandler,
+                toggleCreatureHandler } = this.props,
 
             toggleStyles = {
                 border: '1px solid #e0e0e0',
@@ -63,7 +65,7 @@ class Toggle extends Component {
                         activeToggleStyles : inactiveToggleStyles}
                         className={'noselect ImageToggle ' +
                             (avatarType === 'image' ? 'active' : 'inactive')}
-                        onClick={this.props.toggleImageHandler}>
+                        onClick={toggleImageHandler}>
 
                         Image
                     </div>
@@ -72,7 +74,7 @@ class Toggle extends Component {
                         activeToggleStyles : inactiveToggleStyles}
                         className={'noselect CreatureToggle ' +
                             (avatarType === 'creature' ? 'active' : 'inactive')}
-                        onClick={this.props.toggleCreatureHandler}>
+                        onClick={toggleCreatureHandler}>
 
                         Creature
                     </div>

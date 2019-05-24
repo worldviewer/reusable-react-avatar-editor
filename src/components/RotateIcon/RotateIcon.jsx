@@ -3,20 +3,21 @@ import { MdRotate90DegreesCcw as Rotate } from 'react-icons/md';
 import './RotateIcon.scss';
 
 const
-    RotateIcon = props => {
+    RotateIcon = ({disabled, ...props}) => {
         const
             iconStyles = {
                 cursor: 'pointer',
                 marginLeft: '10px',
-                pointerEvents: props.disabled ? 'none' : 'auto',
-                position: 'relative'
+                pointerEvents: disabled ? 'none' : 'auto',
+                position: 'relative',
+                top: '-5px'
             },
 
-            color = props.disabled ? '#e0e0e0' : '#00c853';
+            color = disabled ? '#e0e0e0' : '#00c853';
 
         return (
             <Rotate color={color} size={25} className='RotateIcon'
-				style={{...iconStyles, top: '-5px'}} {...props} />
+				style={iconStyles} {...props} />
         );
     }
 

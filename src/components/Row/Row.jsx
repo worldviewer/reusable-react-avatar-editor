@@ -7,7 +7,7 @@ const
         marginBottom: '20px'
     },
 
-    Row = props =>
-        <div style={rowStyles} {...props}>{props.children}</div>;
+    Row = ({children, ...props}) =>
+        <div style={rowStyles} {...props}>{children}</div>;
 
 export default Row;

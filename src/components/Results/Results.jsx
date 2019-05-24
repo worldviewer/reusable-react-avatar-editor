@@ -1,23 +1,23 @@
 import React from 'react';
 
-const Results = props => {
+const Results = ({windowWidth, children, ...props}) => {
     const
         resultsStyles = {
             height: '40vh',
             display: 'flex',
-            flexWrap: props.windowWidth > 800 ? 'nowrap' : 'wrap',
+            flexWrap: windowWidth > 800 ? 'nowrap' : 'wrap',
             justifyContent: 'space-evenly',
-            overflow: props.windowWidth > 800 ? 'hidden' : 'scroll'
+            overflow: windowWidth > 800 ? 'hidden' : 'scroll'
         };
 
     return (
         <div>
-			{ props.windowWidth > 800 ?
+			{ windowWidth > 800 ?
 				<div style={resultsStyles}>
-					{props.children}
+					{children}
 				</div> :
 
-				<div>{props.children}</div> }
+				<div>{children}</div> }
 		</div>
     );
 };

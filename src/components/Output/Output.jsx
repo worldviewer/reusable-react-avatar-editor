@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Output = props => {
+const Output = ({display, children, ...props}) => {
     const
         panelStyles = {
             height: '100%',
@@ -14,10 +14,10 @@ const Output = props => {
             justifyContent: 'center'
         };
 
-    return props.display ?
-        <span style={panelStyles}>
+    return display ?
+        <span style={panelStyles} {...props}>
 			<span style={wrapperStyles}>
-				{props.children}
+				{children}
 			</span>
 		</span> : null;
 };

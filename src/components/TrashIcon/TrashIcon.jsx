@@ -6,11 +6,12 @@ const
     iconStyles = {
         cursor: 'pointer',
         marginLeft: '10px',
-        position: 'relative'
+        position: 'relative',
+        top: '-3px'
     },
 
     TrashIcon = props =>
         <TrashCan color='#00c853' size={20} className='TrashIcon'
-			style={{...iconStyles, top: '-3px'}} {...props} />;
+			style={iconStyles} {...props} />;
 
 export default TrashIcon;
