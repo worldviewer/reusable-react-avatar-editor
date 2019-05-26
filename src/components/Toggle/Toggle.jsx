@@ -14,7 +14,7 @@ class Toggle extends Component {
     static Creature = ({ avatarType, children }) =>
         (avatarType === 'creature' ? children : null);
 
-    render() {
+    render = () => {
         const
             avatarType = this.props.value,
             { isControlledComponent,

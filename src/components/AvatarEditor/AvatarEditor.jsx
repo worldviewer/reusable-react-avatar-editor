@@ -17,18 +17,15 @@ class AvatarEditor extends Component {
         };
 
         this.props = props;
-
-        this.toggleImage = this.toggleImage.bind(this);
-        this.toggleCreature = this.toggleCreature.bind(this);
     }
 
-    toggleImage() {
+    toggleImage = () => {
         logTitle('AvatarEditor: Toggling to image');
 
         this.setState({ avatarType: 'image' });
     }
 
-    toggleCreature() {
+    toggleCreature = () => {
         logTitle('AvatarEditor: Toggling to creature');
 
         this.setState({ avatarType: 'creature' });
@@ -67,7 +64,7 @@ class AvatarEditor extends Component {
         }
     }
 
-    render() {
+    render = () => {
         const {
                 defaultImage,
                 defaultCreature,

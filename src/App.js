@@ -10,6 +10,7 @@ import { logTitle, logError } from './libs/utils';
 import svgAvatar from './libs/SvgAvatar/index';
 import ReactJson from 'react-json-view';
 
+// import { creatureBob, creatureJim } from './libs/creatures';
 // import neptune from './assets/neptune.jpg';
 // import plasmaBall from './assets/plasma-ball.jpg';
 
@@ -31,45 +32,9 @@ class App extends Component {
 		};
 
 		this.props = props;
-
-		this.creatureBob = {
-			form: {
-				pattern: 4, // 0-9
-				colors: 4   // 0-7
-			},
-			mouth: {
-				pattern: 7, // 0-9
-				colors: 1   // 0-7
-			},
-			eye: {
-				pattern: 3, // 0-9
-				colors: 7   // 0-7
-			}
-		};
-
-		this.creatureJim = {
-			form: {
-				pattern: 7,
-				colors: 0
-			},
-			mouth: {
-				pattern: 6,
-				colors: 2
-			},
-			eye: {
-				pattern: 3,
-				colors: 6
-			}			
-		};
-
-		this.onUpdateImage = this.onUpdateImage.bind(this);
-		this.onUpdateCreature = this.onUpdateCreature.bind(this);
-		this.onDropRejected = this.onDropRejected.bind(this);
-		this.onError = this.onError.bind(this);
-		this.saveWindowState = this.saveWindowState.bind(this);
 	}
 
-	onUpdateCreature(creature) {
+	onUpdateCreature = creature => {
 		logTitle('App: onUpdateCreature');
 		console.log(creature);
 		console.log('');
@@ -80,7 +45,7 @@ class App extends Component {
 		this.setState({creature, creatureSVG});
 	}
 
-	onUpdateImage(image, imageData) {
+	onUpdateImage = (image, imageData) => {
 		logTitle('App: onUpdateImage');
 		console.log(image);
 		console.log(imageData);
@@ -89,7 +54,7 @@ class App extends Component {
 		this.setState({image, imageData})
 	}
 
-	onDropRejected(rejectedFiles) {
+	onDropRejected = rejectedFiles => {
 		logTitle('App: onDropRejected');
 
 		const messages = rejectedFiles.map(file => {
@@ -115,11 +80,11 @@ class App extends Component {
 			'App', 'onDropRejected');
 	}
 
-	onError(err) {
+	onError = err => {
 		logError(err);
 	}
 
-	saveWindowState() {
+	saveWindowState = () => {
 		console.log('window width: ' + window.innerWidth);
 
 		this.setState({
@@ -135,7 +100,7 @@ class App extends Component {
 		window.removeEventListener('resize', this.saveWindowState);
 	}
 
-	render() {
+	render = () => {
 		const
 			{ creature, creatureSVG, image, imageData, windowWidth } = this.state,
 

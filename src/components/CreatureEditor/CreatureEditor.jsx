@@ -34,11 +34,9 @@ class CreatureEditor extends Component {
         }
 
         this.props = props;
-
-        this.changeCreature = this.changeCreature.bind(this);
     }
 
-    async changeCreature() {
+    changeCreature = async () => {
         const
             creature = svgAvatar.random_avatar(),
             creatureSVG = svgAvatar.render_svg(creature);
@@ -78,7 +76,7 @@ class CreatureEditor extends Component {
         }
     }
 
-    render() {
+    render = () => {
         const { creatureSVG, creature } = this.state,
 
             creatureStyles = {

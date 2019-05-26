@@ -39,22 +39,10 @@ class ImageEditor extends Component {
         };
 
         this.props = props;
-
-        this.onDrop = this.onDrop.bind(this);
-        this.onDropRejected = this.onDropRejected.bind(this);
-        this.setEditorRef = this.setEditorRef.bind(this);
-        this.triggerUpload = this.triggerUpload.bind(this);
-        this.rotateImage = this.rotateImage.bind(this);
-        this.panImage = this.panImage.bind(this);
-        this.zoomImage = this.zoomImage.bind(this);
-        this.resetImage = this.resetImage.bind(this);
-        this.updateImageAvatar = this.updateImageAvatar.bind(this);
-        this.loadPlaceholder = this.loadPlaceholder.bind(this);
-
         this.placeholder = CarlSagan;
     }
 
-    onDrop(acceptedFiles) {
+    onDrop = acceptedFiles => {
         if (acceptedFiles.length === 0) {
             return;
         }
@@ -124,23 +112,23 @@ class ImageEditor extends Component {
         });
     }
 
-    onDropRejected(rejectedFiles) {
+    onDropRejected = rejectedFiles => {
         logTitle('ImageEditor: onDropRejected');
 
         this.props.onDropRejected(rejectedFiles);
     }
 
-    triggerUpload() {
+    triggerUpload = () => {
         if (typeof dropzoneRef === 'function') {
             dropzoneRef.open();
         }
     }
 
-    setEditorRef(editor) {
+    setEditorRef = editor => {
         document.editor = editor;
     }
 
-    rotateImage() {
+    rotateImage = () => {
         const
             rotation = (this.state.image.rotation + 90) % 360;
 
@@ -156,7 +144,7 @@ class ImageEditor extends Component {
         }));
     }
 
-    zoomImage(zoom) {
+    zoomImage = zoom => {
         logTitle('ImageEditor: zoomImage');
         console.log(zoom);
         console.log('');
@@ -169,7 +157,7 @@ class ImageEditor extends Component {
         }));
     }
 
-    panImage(position) {
+    panImage = position => {
         if (this.props.position) {
             return;
         }
@@ -186,7 +174,7 @@ class ImageEditor extends Component {
         }));
     }
 
-    updateImageAvatar(event) {
+    updateImageAvatar = event => {
         event.preventDefault();
 
         logTitle('ImageEditor: updateImageAvatar');
@@ -248,7 +236,7 @@ class ImageEditor extends Component {
         console.log('');
     }
 
-    loadPlaceholder() {
+    loadPlaceholder = () => {
         this.setState(prevState => ({
             image: {
                 ...prevState.image,
@@ -257,7 +245,7 @@ class ImageEditor extends Component {
         }));
     }
 
-    async resetImage() {
+    resetImage = async () => {
         let image, preview;
 
         const {
@@ -300,7 +288,7 @@ class ImageEditor extends Component {
         this.resetImage();
     }
 
-    render() {
+    render = () => {
         const { zoom, rotation, position, file } = this.state.image,
 
             shouldDisableNewImage = this.props.image ? true : false,
