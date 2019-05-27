@@ -135,7 +135,7 @@ class ImageEditor extends Component {
     }
 
     panImage = position => {
-        if (this.props.position) {
+        if (this.props.forcePosition) {
             return;
         }
 
