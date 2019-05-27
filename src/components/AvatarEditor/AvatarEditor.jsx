@@ -5,6 +5,7 @@ import Header from '../Header/Header';
 import Toggle from '../Toggle/Toggle';
 import ImageEditor from '../ImageEditor/ImageEditor';
 import CreatureEditor from '../CreatureEditor/CreatureEditor';
+import { creaturePropType } from '../../libs/propTypes';
 import { logTitle } from '../../libs/utils';
 import './AvatarEditor.scss';
 
@@ -13,7 +14,30 @@ class AvatarEditor extends Component {
         super(props);
 
         this.state = {
-            avatarType: 'image'
+            avatarType: 'image',
+            creature: {
+                form: {
+                    pattern: 0,
+                    colors: 0
+                },
+                mouth: {
+                    pattern: 0,
+                    colors: 0
+                },
+                eye: {
+                    pattern: 0,
+                    colors: 0
+                }
+            },
+            image: {
+                file: null,
+                zoom: 0,
+                rotation: 0,
+                position: {
+                    x: 0.5,
+                    y: 0.5
+                }
+            }
         };
 
         this.props = props;
@@ -72,11 +96,11 @@ class AvatarEditor extends Component {
                 defaultRotation,
                 defaultPosition,
 
-                image,
-                creature,
-                zoom,
-                rotation,
-                position,
+                forceImage,
+                forceCreature,
+                forceZoom,
+                forceRotation,
+                forcePosition,
 
                 onUpdateCreature,
                 onUpdateImage,
@@ -86,6 +110,15 @@ class AvatarEditor extends Component {
                 onDropRejected,
                 onError
             } = this.props,
+
+            {
+                file,
+                zoom,
+                rotation,
+                position
+            } = this.state.image,
+
+            creature = this.state.creature,
 
             avatarType = this.props.avatarType ? this.props.avatarType :
                 this.state.avatarType,
@@ -115,10 +148,25 @@ class AvatarEditor extends Component {
                                 defaultZoom={defaultZoom}
                                 defaultRotation={defaultRotation}
                                 defaultPosition={defaultPosition}
-                                image={image}
+
+                                forceImage={forceImage}
+                                forceZoom={forceZoom}
+                                forceRotation={forceRotation}
+                                forcePosition={forcePosition}
+
+                                file={file}
                                 zoom={zoom}
                                 rotation={rotation}
                                 position={position}
+
+                                changeImageProperty={({key, value}) =>
+                                    this.setState(prevState => ({
+                                        image: {
+                                            ...prevState.image,
+                                            [key]: value
+                                        }
+                                    }))}
+
                                 onUpdateImage={onUpdateImage}
                                 validAttachmentTypes={validAttachmentTypes}
                                 maxSize={maxSize}
@@ -129,8 +177,10 @@ class AvatarEditor extends Component {
                         <Toggle.Creature>
                             <CreatureEditor
                                 defaultCreature={defaultCreature}
+                                forceCreature={forceCreature}
                                 creature={creature}
-                                onUpdateCreature={onUpdateCreature} />
+                                onUpdateCreature={onUpdateCreature}
+                                changeCreature={creature => this.setState({creature})} />
                         </Toggle.Creature>
 
                     </Toggle>
@@ -142,20 +192,7 @@ class AvatarEditor extends Component {
 
 AvatarEditor.propTypes = {
     defaultImage: PropTypes.string,
-    defaultCreature: PropTypes.shape({
-        form: PropTypes.shape({
-            pattern: PropTypes.number,
-            colors: PropTypes.number
-        }),
-        mouth: PropTypes.shape({
-            pattern: PropTypes.number,
-            colors: PropTypes.number
-        }),
-        eye: PropTypes.shape({
-            pattern: PropTypes.number,
-            colors: PropTypes.number
-        })
-    }),
+    defaultCreature: creaturePropType,
     defaultAvatarType: PropTypes.oneOf(['image', 'creature']),
     defaultZoom: PropTypes.number,
     defaultRotation: PropTypes.number,
@@ -165,20 +202,7 @@ AvatarEditor.propTypes = {
     }),
 
     image: PropTypes.string,
-    creature: PropTypes.shape({
-        form: PropTypes.shape({
-            pattern: PropTypes.number,
-            colors: PropTypes.number
-        }),
-        mouth: PropTypes.shape({
-            pattern: PropTypes.number,
-            colors: PropTypes.number
-        }),
-        eye: PropTypes.shape({
-            pattern: PropTypes.number,
-            colors: PropTypes.number
-        })
-    }),
+    creature: creaturePropType,
     avatarType: PropTypes.oneOf(['image', 'creature']),
     zoom: PropTypes.number,
     rotation: PropTypes.number,

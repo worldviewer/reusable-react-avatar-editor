@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Row from '../Row/Row';
 import Button from '../Button/Button';
 import { logTitle } from '../../libs/utils';
+import { creaturePropType } from '../../libs/propTypes';
 import './CreatureEditor.scss';
 
 // svg_avatar has been imported into the project to fix:
@@ -15,21 +16,6 @@ class CreatureEditor extends Component {
         super(props);
 
         this.state = {
-            creature: {
-                form: {
-                    pattern: 0,
-                    colors: 0
-                },
-                mouth: {
-                    pattern: 0,
-                    colors: 0
-                },
-                eye: {
-                    pattern: 0,
-                    colors: 0
-                }
-            },
-
             creatureSVG: ''
         }
 
@@ -41,7 +27,8 @@ class CreatureEditor extends Component {
             creature = svgAvatar.random_avatar(),
             creatureSVG = svgAvatar.render_svg(creature);
 
-        await this.setState({ creature, creatureSVG });
+        await this.props.changeCreature(creature);
+        await this.setState({ creatureSVG });
 
         logTitle('CreatureEditor: Generating random avatar');
         console.log(creature);
@@ -50,26 +37,29 @@ class CreatureEditor extends Component {
     }
 
     componentDidMount() {
-        const { defaultCreature } = this.props,
-            controlledCreature = this.props.creature;
+        const { defaultCreature, creature } = this.props,
+            controlledCreature = this.props.forceCreature;
 
         if (controlledCreature) {
             const
                 creatureSVG = svgAvatar.render_svg(controlledCreature);
 
-            this.setState({
-                creature: controlledCreature,
-                creatureSVG
-            });
+            this.props.changeCreature(controlledCreature);
+            this.setState({creatureSVG});
+
+        } else if (creature) {
+            const
+                creatureSVG = svgAvatar.render_svg(creature);
+
+            this.props.changeCreature(creature);
+            this.setState({creatureSVG});
 
         } else if (defaultCreature) {
             const
                 creatureSVG = svgAvatar.render_svg(defaultCreature);
 
-            this.setState({
-                creature: defaultCreature,
-                creatureSVG
-            });
+            this.props.changeCreature(defaultCreature);
+            this.setState({creatureSVG});
 
         } else {
             this.changeCreature();
@@ -77,7 +67,8 @@ class CreatureEditor extends Component {
     }
 
     render = () => {
-        const { creatureSVG, creature } = this.state,
+        const { creatureSVG } = this.state,
+            { creature } = this.props,
 
             creatureStyles = {
                 marginBottom: '27px',
@@ -85,7 +76,7 @@ class CreatureEditor extends Component {
                 width: '188px'
             },
 
-            isControlledCreature = this.props.creature ? true : false,
+            isControlledCreature = this.props.forceCreature ? true : false,
             { onUpdateCreature } = this.props;
 
         return (
@@ -115,36 +106,12 @@ class CreatureEditor extends Component {
 }
 
 CreatureEditor.propTypes = {
-    defaultCreature: PropTypes.shape({
-        form: PropTypes.shape({
-            pattern: PropTypes.number,
-            colors: PropTypes.number
-        }),
-        mouth: PropTypes.shape({
-            pattern: PropTypes.number,
-            colors: PropTypes.number
-        }),
-        eye: PropTypes.shape({
-            pattern: PropTypes.number,
-            colors: PropTypes.number
-        })
-    }),
-    creature: PropTypes.shape({
-        form: PropTypes.shape({
-            pattern: PropTypes.number,
-            colors: PropTypes.number
-        }),
-        mouth: PropTypes.shape({
-            pattern: PropTypes.number,
-            colors: PropTypes.number
-        }),
-        eye: PropTypes.shape({
-            pattern: PropTypes.number,
-            colors: PropTypes.number
-        })
-    }),
+    defaultCreature: creaturePropType,
+    forceCreature: creaturePropType,
+    creature: creaturePropType,
 
-    onUpdateCreature: PropTypes.func
+    onUpdateCreature: PropTypes.func,
+    changeCreature: PropTypes.func
 };
 
 export default CreatureEditor;

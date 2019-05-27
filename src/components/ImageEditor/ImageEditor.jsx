@@ -26,18 +26,6 @@ class ImageEditor extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            image: {
-                file: null,
-                zoom: 0,
-                rotation: 0,
-                position: {
-                    x: 0.5,
-                    y: 0.5
-                }
-            }
-        };
-
         this.props = props;
         this.placeholder = CarlSagan;
     }
@@ -95,17 +83,10 @@ class ImageEditor extends Component {
                 return;
             }
 
-            const fileWithType = {
-                ...file,
-                type: type.mime
-            };
-
-            this.setState(prevState => ({
-                image: {
-                    ...prevState.image,
-                    file: fileWithType
-                }
-            }));
+            this.props.changeImageProperty({
+                key: 'file',
+                value: file.preview
+            });
 
         }).catch(e => {
             this.props.onError('File Drop Error', 'Error Adding File(s): ' + e.message);
@@ -130,18 +111,16 @@ class ImageEditor extends Component {
 
     rotateImage = () => {
         const
-            rotation = (this.state.image.rotation + 90) % 360;
+            rotation = (this.props.rotation + 90) % 360;
 
         logTitle('ImageEditor: rotateImage');
         console.log(rotation);
         console.log('');
 
-        this.setState(prevState => ({
-            image: {
-                ...prevState.image,
-                rotation
-            }
-        }));
+        this.props.changeImageProperty({
+            key: 'rotation',
+            value: rotation
+        });
     }
 
     zoomImage = zoom => {
@@ -149,12 +128,10 @@ class ImageEditor extends Component {
         console.log(zoom);
         console.log('');
 
-        this.setState(prevState => ({
-            image: {
-                ...prevState.image,
-                zoom
-            }
-        }));
+        this.props.changeImageProperty({
+            key: 'zoom',
+            value: zoom
+        });
     }
 
     panImage = position => {
@@ -166,13 +143,31 @@ class ImageEditor extends Component {
         console.log(position);
         console.log('');
 
-        this.setState(prevState => ({
-            image: {
-                ...prevState.image,
-                position
-            }
-        }));
+        this.props.changeImageProperty({
+            key: 'position',
+            value: position
+        });
     }
+
+    getScaledAvatar = () =>
+        new Promise((resolve, reject) =>
+            document.editor.getImageScaledToCanvas().toBlob(blob => {
+                const
+                    newImg = document.createElement('img'),
+                    url = URL.createObjectURL(blob);
+
+                newImg.src = url;
+
+                resolve(newImg.src);
+            }, fileType, 1)
+        );
+
+    getFileType = preview =>
+        getAttachmentFromPreview(preview)
+            .then(image => ({
+                image: preview,
+                fileType: fileType(new Uint8Array(image)).mime
+            }));
 
     updateImageAvatar = event => {
         event.preventDefault();
@@ -181,68 +176,42 @@ class ImageEditor extends Component {
         console.log('document.editor ref:');
         console.log(document.editor);
 
-        let avatars = {
-            scaled: null,
-            type: null
-        };
-
-        new Promise((resolve, reject) => {
-                // If you want the image resized to the canvas size (also a 
-                // HTMLCanvasElement)
-                document.editor.getImageScaledToCanvas().toBlob(blob => {
-                    const
-                        newImg = document.createElement('img'),
-                        url = URL.createObjectURL(blob);
-
-                    newImg.src = url;
-
-                    resolve(newImg.src);
-                }, fileType, 1);
-            })
-
-            .then(async scaled => {
-                avatars.scaled = scaled;
-
-                const attachment =
-                    await getAttachmentFromPreview(this.state.image.file.preview);
-
-                avatars.type = await
-                fileType(new Uint8Array(attachment)).mime;
+        this.getScaledAvatar()
+            .then(preview => this.getFileType(preview))
+            .then(async ({image, fileType}) => {
 
                 logTitle('ImageEditor: Image type');
-                console.log(avatars.type);
+                console.log(fileType);
                 console.log('');
 
                 logTitle('ImageEditor: Scaled image');
-                console.log(avatars.scaled);
+                console.log(image);
                 console.log('');
 
-                await this.setState(prevState => ({
-                    image: {
-                        ...prevState.image,
-                        type: avatars.type
-                    }
-
-                }), () => {
-                    const { file, ...rest } = this.state.image;
-                    this.props.onUpdateImage(avatars.scaled, rest);
+                await this.props.changeImageProperty({
+                    key: 'type',
+                    value: fileType
                 });
+
+                const {
+                    zoom,
+                    rotation,
+                    position
+                } = this.props;
+
+                this.props.onUpdateImage(image, {zoom, rotation, position});
             })
 
             .catch(e => {
-                this.props.onError('Processing Error', 'Error processing avatar images: ' + e.message);
+                this.props.onError('Processing Error',
+                    'Error processing avatar images: ' + e.message);
             });
 
         console.log('');
     }
 
     loadPlaceholder = () => {
-        this.setState(prevState => ({
-            image: {
-                ...prevState.image,
-                file: this.placeholder
-            }
-        }));
+        this.props.changeImageProperty({key: 'file', value: this.placeholder});
     }
 
     resetImage = async () => {
@@ -253,13 +222,23 @@ class ImageEditor extends Component {
             defaultZoom,
             defaultRotation,
             defaultPosition,
+
+            forceZoom,
+            forcePosition,
+            forceRotation,
+            forceImage,
+
+            file,
             zoom,
             position,
             rotation
         } = this.props;
 
-        if (this.props.image) {
-            preview = this.props.image;
+        if (forceImage) {
+            preview = forceImage;
+
+        } else if (file) {
+            preview = file;
 
         } else if (defaultImage) {
             preview = defaultImage;
@@ -269,18 +248,37 @@ class ImageEditor extends Component {
             preview = image.src;
         }
 
-        this.setState({
-            image: {
-                file: { preview },
-                zoom: zoom ? zoom : defaultZoom ? defaultZoom : 0,
-                rotation: rotation ? rotation : defaultRotation ? defaultRotation : 0,
-                position: position ? position : defaultPosition ? defaultPosition : { x: 0.5, y: 0.5 },
-                type: 'image/jpg'
-            }
-        }, () => {
-            logTitle('ImageEditor: resetImage');
-            console.log(this.state.image);
-            console.log('');
+        logTitle('ImageEditor: resetImage');
+
+        this.props.changeImageProperty({
+            key: 'file',
+            value: preview
+        });
+
+        this.props.changeImageProperty({
+            key: 'zoom',
+            value: forceZoom ? forceZoom :
+                zoom ? zoom :
+                defaultZoom ? defaultZoom : 0
+        });
+
+        this.props.changeImageProperty({
+            key: 'rotation',
+            value: forceRotation ? forceRotation :
+                rotation ? rotation :
+                defaultRotation ? defaultRotation : 0
+        });
+
+        this.props.changeImageProperty({
+            key: 'position',
+            value: forcePosition ? forcePosition :
+                position ? position :
+                defaultPosition ? defaultPosition : { x: 0.5, y: 0.5 }
+        });
+
+        this.props.changeImageProperty({
+            key: 'type',
+            value: 'image/jpg'
         });
     }
 
@@ -289,13 +287,17 @@ class ImageEditor extends Component {
     }
 
     render = () => {
-        const { zoom, rotation, position, file } = this.state.image,
+        const { zoom,
+                rotation,
+                position,
+                file,
+                validAttachmentTypes,
+                maxSize,
+                forceImage } = this.props,
 
-            shouldDisableNewImage = this.props.image ? true : false,
-            shouldDisableZoom = this.props.zoom ? true : false,
-            shouldDisableRotation = this.props.rotation ? true : false,
-
-            { validAttachmentTypes, maxSize } = this.props,
+            shouldDisableNewImage = this.props.forceImage ? true : false,
+            shouldDisableZoom = this.props.forceZoom ? true : false,
+            shouldDisableRotation = this.props.forceRotation ? true : false,
 
             editorStyles = {
                 alignItems: 'center',
@@ -337,8 +339,8 @@ class ImageEditor extends Component {
                 width: '50%',
             },
 
-            image = file ? file.preview :
-            this.props.image ? this.props.image : null;
+            image = file ? file :
+                forceImage ? forceImage : null;
 
         return (
             <form onSubmit={this.updateImageAvatar}>
@@ -416,7 +418,15 @@ ImageEditor.propTypes = {
         y: PropTypes.number
     }),
 
-    image: PropTypes.string,
+    forceImage: PropTypes.string,
+    forceZoom: PropTypes.number,
+    forceRotation: PropTypes.number,
+    forcePosition: PropTypes.shape({
+        x: PropTypes.number,
+        y: PropTypes.number
+    }),
+
+    file: PropTypes.string,
     zoom: PropTypes.number,
     rotation: PropTypes.number,
     position: PropTypes.shape({
@@ -424,6 +434,7 @@ ImageEditor.propTypes = {
         y: PropTypes.number
     }),
 
+    changeImageProiperty: PropTypes.func,
     onUpdateImage: PropTypes.func,
     onError: PropTypes.func,
 
