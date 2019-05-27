@@ -214,7 +214,7 @@ class ImageEditor extends Component {
         this.props.changeImageProperty({key: 'file', value: this.placeholder});
     }
 
-    resetImage = async () => {
+    resetImage = async ({setZoom, setRotation, setPosition} = {}) => {
         let image, preview;
 
         const {
@@ -249,6 +249,11 @@ class ImageEditor extends Component {
         }
 
         logTitle('ImageEditor: resetImage');
+        console.log('setZoom: ' + setZoom);
+        console.log('setRotation: ' + setRotation);
+        console.log('setPosition:');
+        console.log(setPosition);
+        console.log('');
 
         this.props.changeImageProperty({
             key: 'file',
@@ -258,6 +263,7 @@ class ImageEditor extends Component {
         this.props.changeImageProperty({
             key: 'zoom',
             value: forceZoom ? forceZoom :
+                setZoom !== undefined ? setZoom :
                 zoom ? zoom :
                 defaultZoom ? defaultZoom : 0
         });
@@ -265,6 +271,7 @@ class ImageEditor extends Component {
         this.props.changeImageProperty({
             key: 'rotation',
             value: forceRotation ? forceRotation :
+                setRotation !== undefined ? setRotation :
                 rotation ? rotation :
                 defaultRotation ? defaultRotation : 0
         });
@@ -272,6 +279,7 @@ class ImageEditor extends Component {
         this.props.changeImageProperty({
             key: 'position',
             value: forcePosition ? forcePosition :
+                setPosition !== undefined ? setPosition :
                 position ? position :
                 defaultPosition ? defaultPosition : { x: 0.5, y: 0.5 }
         });
@@ -396,7 +404,12 @@ class ImageEditor extends Component {
 					</div>
 
 					<RotateIcon onClick={this.rotateImage} disabled={shouldDisableRotation} />
-					<TrashIcon onClick={this.resetImage} />
+					<TrashIcon
+                        onClick={() => this.resetImage({
+                            setZoom: 0,
+                            setRotation: 0,
+                            setPosition: {x: 0.5, y: 0.5}
+                        })} />
 				</Row>
 
 				<Row>
