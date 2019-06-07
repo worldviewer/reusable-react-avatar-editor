@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/reusable-react-avatar-editor/static/css/main.dfe8a692.chunk.css",
+    "main.js": "/reusable-react-avatar-editor/static/js/main.cfa84f4e.chunk.js",
+    "main.js.map": "/reusable-react-avatar-editor/static/js/main.cfa84f4e.chunk.js.map",
+    "runtime~main.js": "/reusable-react-avatar-editor/static/js/runtime~main.1ef5c219.js",
+    "runtime~main.js.map": "/reusable-react-avatar-editor/static/js/runtime~main.1ef5c219.js.map",
+    "static/css/2.509658c0.chunk.css": "/reusable-react-avatar-editor/static/css/2.509658c0.chunk.css",
+    "static/js/2.d31120ee.chunk.js": "/reusable-react-avatar-editor/static/js/2.d31120ee.chunk.js",
+    "static/js/2.d31120ee.chunk.js.map": "/reusable-react-avatar-editor/static/js/2.d31120ee.chunk.js.map",
+    "index.html": "/reusable-react-avatar-editor/index.html",
+    "precache-manifest.58632e2e49800dc5081a502ab017c76e.js": "/reusable-react-avatar-editor/precache-manifest.58632e2e49800dc5081a502ab017c76e.js",
+    "service-worker.js": "/reusable-react-avatar-editor/service-worker.js",
+    "static/css/2.509658c0.chunk.css.map": "/reusable-react-avatar-editor/static/css/2.509658c0.chunk.css.map",
+    "static/css/main.dfe8a692.chunk.css.map": "/reusable-react-avatar-editor/static/css/main.dfe8a692.chunk.css.map",
+    "static/media/carl-sagan.jpg": "/reusable-react-avatar-editor/static/media/carl-sagan.749a9569.jpg"
+  }
+}
