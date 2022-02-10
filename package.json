@@ -6,7 +6,7 @@
     "@svgr/core": "^4.2.0",
     "dompurify": "^1.0.10",
     "jsdom": "^15.0.0",
-    "node-sass": "^4.12.0",
+    "node-sass": "^7.0.0",
     "prop-types": "^15.7.2",
     "rc-slider": "^8.6.9",
     "react": "^16.8.6",
